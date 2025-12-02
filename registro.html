@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/registro.css">
+  <link rel="manifest" href="js/manifest.json">
+  <title>PCE-UT | Registrarse</title>
+</head>
+
+<script type="module">
+  import { supabase } from './js/supabaseClient.js'
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('formRegistro')
+    if (!form) return
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const correo = document.getElementById('correo').value.trim()
+      const usuario = document.getElementById('usuario').value.trim()
+      const password = document.getElementById('password').value.trim()
+      const confirmar = document.getElementById('confirmar').value.trim()
+
+      if (password !== confirmar) {
+        alert('⚠️ Las contraseñas no coinciden.')
+        return
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email: correo,
+        password: password,
+      })
+
+      if (error) {
+        alert('❌ Error al registrar: ' + error.message)
+        return
+      }
+
+      alert('✅ Registro exitoso. Verifica tu correo antes de iniciar sesión.')
+      window.location.href = 'login.html'
+    })
+  })
+</script>
+
+
+<body>
+  <!-- Barra superior de contacto -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <span>📧 contacto@pceut.edu.mx</span>
+      <span class="separator">|</span>
+      <span>📞 +52 (800) 123 4567</span>
+    </div>
+    <div class="top-bar-right">
+      <!-- <a href="index.html">Inicio</a> -->
+    </div>
+  </div>
+
+  <!-- Header con logo -->
+  <header class="header">
+    <div class="logo">
+      <a href="index.html">
+        <img id="logo" src="img/Logo2.png" alt="Logo PCE-UT" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Formulario de registro -->
+  <section class="registro-container">
+    <form class="form-registro" id="formRegistro" action="#" method="post">
+      <h2>Crear cuenta</h2>
+
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" name="correo" placeholder="Ej: correo@ejemplo.com" required />
+
+      <label for="usuario">Nombre de usuario</label>
+      <input type="text" id="usuario" name="usuario" placeholder="Ej: pepito123" required />
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required />
+
+      <label for="confirmar">Confirmar contraseña</label>
+      <input type="password" id="confirmar" name="confirmar" placeholder="Repite tu contraseña" required />
+
+      <button type="submit">Registrarse</button>
+
+      <p class="login-text">
+        ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
+      </p>
+      <p class="login-text">
+        <a href="index.html">← Regresar al inicio</a>
+      </p>
+    </form>
+  </section>
+
+  <!-- Modal de registro completado -->
+  <!-- <div class="modal" id="modalExito">
+    <div class="modal-contenido">
+      <h3>✅ Registro completado</h3>
+      <p>Tu cuenta ha sido creada correctamente.</p>
+      <button id="btnRegresar">Regresar a iniciar tu sesión</button>
+    </div>
+  </div> -->
+</body>
+
+</html>

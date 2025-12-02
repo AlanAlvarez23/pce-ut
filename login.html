@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="manifest" href="js/manifest.json">
+  <title>PCE-UT | Inciar Sesion</title>
+</head>
+
+<script type="module">
+  import { supabase } from './js/supabaseClient.js'
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const formLogin = document.getElementById('formLogin')
+    if (!formLogin) return
+
+    formLogin.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const correo = document.getElementById('correo').value.trim()
+      const password = document.getElementById('password').value.trim()
+
+      // Validar que los campos no estén vacíos
+      if (!correo || !password) {
+        alert('⚠️ Por favor, completa todos los campos.')
+        return
+      }
+
+      // Validar formato de email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(correo)) {
+        alert('⚠️ Por favor, ingresa un correo electrónico válido.')
+        return
+      }
+
+      // Mostrar indicador de carga
+      const submitButton = formLogin.querySelector('button[type="submit"]')
+      const originalButtonText = submitButton.textContent
+      submitButton.disabled = true
+      submitButton.textContent = 'Iniciando sesión...'
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: correo,
+          password: password,
+        })
+
+        if (error) {
+          console.error('Supabase login error:', error)
+
+          // Restaurar botón
+          submitButton.disabled = false
+          submitButton.textContent = originalButtonText
+
+          // Manejar diferentes tipos de errores
+          const errorMsg = error.message.toLowerCase()
+
+          if (errorMsg.includes('invalid login credentials') || errorMsg.includes('invalid_credentials')) {
+            alert('❌ Error: Correo electrónico o contraseña incorrectos.\n\nVerifica que:\n• Tu correo esté correctamente escrito\n• Tu contraseña sea la correcta\n• Hayas confirmado tu correo electrónico')
+          } else if (errorMsg.includes('email not confirmed') || errorMsg.includes('confirm')) {
+            const reenviar = confirm('⚠️ Tu correo electrónico no está confirmado.\n\n¿Quieres que reenviemos el email de verificación?')
+            if (reenviar) {
+              try {
+                const { error: resendError } = await supabase.auth.resend({
+                  type: 'signup',
+                  email: correo,
+                  options: {
+                    emailRedirectTo: window.location.origin + '/login.html'
+                  }
+                })
+                if (resendError) {
+                  alert('❌ No se pudo reenviar el correo: ' + resendError.message)
+                } else {
+                  alert('📧 Correo de verificación reenviado.\n\nRevisa tu bandeja de entrada (y la carpeta de spam) para confirmar tu cuenta.')
+                }
+              } catch (resendErr) {
+                alert('❌ Error al reenviar el correo: ' + (resendErr?.message || 'Error desconocido'))
+              }
+            }
+          } else {
+            alert('❌ Error al iniciar sesión: ' + error.message)
+          }
+          return
+        }
+
+        // Si no hay error, el login fue exitoso
+        if (data?.user) {
+          // Paso 2: Obtener el rol del usuario desde la tabla 'users'
+          try {
+            const { data: profile, error: profileError } = await supabase
+              .from('users')
+              .select('role')
+              .eq('id', data.user.id)
+              .single()
+
+            if (profileError) {
+              console.warn('No se pudo obtener el rol del usuario:', profileError)
+              // Si no hay perfil, intentar determinar el rol por email (fallback)
+              const emailLower = correo.toLowerCase()
+              let fallbackRole = 'student' // Por defecto estudiante
+              
+              if (emailLower.includes('admin')) {
+                fallbackRole = 'admin'
+              } else if (emailLower.includes('profesor') || emailLower.includes('teacher')) {
+                fallbackRole = 'teacher'
+              }
+              
+              localStorage.setItem('userRole', fallbackRole)
+            } else if (profile) {
+              // Guardar el rol en localStorage
+              localStorage.setItem('userRole', profile.role || 'student')
+            } else {
+              // Si no hay perfil, usar rol por defecto
+              localStorage.setItem('userRole', 'student')
+            }
+          } catch (err) {
+            console.error('Error al obtener el rol:', err)
+            // En caso de error, usar rol por defecto
+            localStorage.setItem('userRole', 'student')
+          }
+
+          // Paso 3: Redirigir según el rol
+          const userRole = localStorage.getItem('userRole')
+          
+          switch (userRole) {
+            case 'admin':
+              window.location.href = 'dashboard/admin.html'
+              break
+            case 'teacher':
+            case 'profesor':
+              window.location.href = 'dashboard/teacher.html'
+              break
+            case 'student':
+            case 'estudiante':
+              window.location.href = 'dashboard/student.html'
+              break
+            default:
+              // Si no hay rol definido, ir al inicio
+              window.location.href = 'index.html'
+          }
+        }
+      } catch (err) {
+        // Restaurar botón en caso de error inesperado
+        submitButton.disabled = false
+        submitButton.textContent = originalButtonText
+        console.error('Error inesperado:', err)
+        alert('❌ Ocurrió un error inesperado. Por favor, intenta nuevamente.')
+      }
+    })
+  })
+</script>
+
+
+<body>
+  <!-- Barra superior de contacto -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <span>📧 contacto@pceut.edu.mx</span>
+      <span class="separator">|</span>
+      <span>📞 +52 (800) 123 4567</span>
+    </div>
+    <div class="top-bar-right">
+      <!-- <a href="index.html">Inicio</a> -->
+    </div>
+  </div>
+
+  <!-- Header con logo -->
+  <header class="header">
+    <div class="logo">
+      <a href="index.html">
+        <img id="logo" src="img/Logo2.png" alt="Logo PCE-UT" />
+      </a>
+    </div>
+  </header>
+
+  <!-- Contenedor del Login -->
+  <main class="login-container">
+    <div class="login-box">
+      <h2>Iniciar Sesión</h2>
+      <form id="formLogin">
+        <input type="email" id="correo" placeholder="Correo electrónico" required />
+        <input type="password" id="password" placeholder="Contraseña" required />
+        <button type="submit">Ingresar</button>
+      </form>
+      <p class="register-text">
+        ¿No tienes cuenta? <a href="registro.html">Registrarse</a>
+      </p>
+      <p class="register-text">
+        <a href="index.html">← Regresar al inicio</a>
+      </p>
+    </div>
+  </main>
+</body>
+
+</html>

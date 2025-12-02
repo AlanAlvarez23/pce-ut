@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCE-UT | Página de Inicio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="js/manifest.json">
+</head>
+
+<body>
+    <!-- Barra superior de contacto -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span>📧 contacto@pceut.edu.mx</span>
+            <span class="separator">|</span>
+            <span>📞 +52 81-45-34-28-08</span>
+        </div>
+        <div class="top-bar-right">
+            <!-- <span id="top-auth-area">
+                <a id="top-login-link" href="login.html">Iniciar Sesión</a>
+            </span> -->
+        </div>
+    </div>
+
+    <!-- Header principal -->
+    <header>
+        <div class="header-container">
+            <h1>Plataforma Comunicativa Estudiantil</h1>
+            <nav>
+                <ul>
+                    <li id="nav-acerca"><a href="#acerca">Acerca de</a></li>
+                    <li id="nav-caracteristicas"><a href="#caracteristicas">Servicios</a></li>
+                    <li id="nav-apps" style="display: none;"><a href="#apps">Apps</a></li>
+                    <li id="nav-calificar" style="display: none;"><a href="#dashboard"
+                            onclick="scrollToSection('rating-section')">Calificar Proyectos</a></li>
+                    <li id="nav-historial" style="display: none;"><a href="#historial"
+                            onclick="scrollToSection('historial')">Historial de Calificaciones</a></li>
+                    <li id="nav-historial-profesor" style="display: none;"><a href="#historial-profesor"
+                            onclick="scrollToSection('historial-profesor')">Mis Calificaciones</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                    <li id="auth-area"><a id="login-link" href="login.html">Iniciar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section para usuarios NO autenticados -->
+    <section class="hero-section public-content">
+        <div class="hero-content">
+            <h1>Plataforma Educativa de Valores</h1>
+            <p class="hero-subtitle">Desde 2025</p>
+            <p>
+                Ofrecemos conocimiento especializado en valores fundamentales y soporte completo 24/7 para construir
+                comunidades más pacíficas e inclusivas.
+            </p>
+            <a href="#caracteristicas" class="boton-principal"><span>Conoce Más</span></a>
+        </div>
+    </section>
+
+    <!-- Contenido para usuarios NO autenticados -->
+    <main id="acerca" class="public-content">
+        <section class="introduccion">
+            <h2>Acerca de Nosotros</h2>
+            <p>
+                Somos una <strong>plataforma educativa especializada en valores fundamentales</strong> que ayuda a
+                instituciones educativas, organizaciones y comunidades a evaluar, entender y mejorar los niveles de
+                Paz, Inclusión y Respeto en sus entornos.
+            </p>
+            <p>
+                Nuestro servicio combina <strong>tecnología innovadora con metodologías pedagógicas probadas</strong>
+                para
+                crear experiencias interactivas que involucran a estudiantes y educadores en el aprendizaje de valores
+                esenciales. A través de videojuegos educativos, aplicaciones móviles y herramientas de evaluación,
+                facilitamos el diálogo y la reflexión sobre estos temas fundamentales.
+            </p>
+            <p>
+                Trabajamos con <strong>mediadores escolares, administradores educativos y profesionales</strong> que
+                buscan
+                crear ambientes más armoniosos y respetuosos. Nuestra plataforma proporciona análisis detallados y
+                visualizaciones claras de los datos recopilados, permitiendo tomar decisiones informadas para mejorar
+                la convivencia en tu comunidad.
+            </p>
+        </section>
+    </main>
+
+    <section id="caracteristicas" class="public-content">
+        <h2>Nuestros Servicios</h2>
+        <div class="lista-caracteristicas">
+            <ul>
+                <li>
+                    <strong>Evaluación de Valores Fundamentales</strong>
+                    Realiza encuestas y evaluaciones interactivas para medir los niveles de Paz, Inclusión y Respeto en
+                    tu comunidad. Obtén métricas precisas y análisis detallados que te ayudarán a identificar áreas de
+                    mejora.
+                </li>
+                <li>
+                    <strong>Videojuegos Educativos Interactivos</strong>
+                    Aprende sobre valores de manera divertida y efectiva a través de videojuegos diseñados
+                    específicamente para enseñar conceptos de paz, inclusión y respeto. Los estudiantes disfrutan
+                    mientras aprenden.
+                </li>
+                <li>
+                    <strong>Dashboard de Análisis en Tiempo Real</strong>
+                    Visualiza todos los datos recopilados en un panel de control intuitivo. Gráficos, estadísticas y
+                    reportes que te ayudan a entender la situación actual de tu comunidad educativa.
+                </li>
+                <!-- <li>
+                    <strong>Herramientas de Mediación Escolar</strong>
+                    Accede a recursos especializados para mediadores escolares. Filtra y analiza casos por fecha, tipo o
+                    área específica para facilitar el trabajo de resolución de conflictos.
+                </li> -->
+    </section>
+
+    <!-- Recuadro de Acceso Rápido - Videojuego -->
+    <section id="apps" class="quick-access-section public-content">
+        <div class="quick-access-grid quick-access-single">
+            <a href="https://www.astrocade.com/games/penales-matem%C3%A1ticos/01K9H9NJY62AYA7NQRHGZ4ZSNX?sharedByCreator=mau_rb"
+                target="_blank" class="quick-access-card videojuego-card">
+                <div class="card-overlay">
+                    <h3>Videojuego Educativo</h3>
+                    <div class="card-divider"></div>
+                    <span class="card-link-text">Jugar ahora</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Dashboard para usuarios autenticados (General) -->
+    <main id="dashboard" class="dashboard-content" style="display: none;">
+        <section class="dashboard-header">
+            <h2>Dashboard de Control</h2>
+            <p class="welcome-text">Bienvenido al panel de administración</p>
+        </section>
+
+        <!-- Métricas de Valores -->
+        <section class="metrics-section">
+            <h3>Métricas de Valores</h3>
+            <div class="metrics-grid" id="metricas-valores">
+                <div class="metric-card">
+                    <div class="metric-icon">🕊️</div>
+                    <h4>Paz</h4>
+                    <div class="metric-value" id="paz-value">75%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="paz-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🤝</div>
+                    <h4>Inclusión</h4>
+                    <div class="metric-value" id="inclusion-value">82%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="inclusion-bar" style="width: 82%"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🙏</div>
+                    <h4>Respeto</h4>
+                    <div class="metric-value" id="respeto-value">68%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="respeto-bar" style="width: 68%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulario de Calificación - OCULTO pero no eliminado -->
+        <!-- 
+        <section id="rating-section" class="rating-section" style="display: none;">
+            <h3>Calificar Proyecto o Medición</h3>
+            <form id="rating-form" class="rating-form">
+                <div class="form-group">
+                    <label for="proyecto-select">Seleccionar Proyecto/Actividad:</label>
+                    <select id="proyecto-select" name="proyecto-select" required>
+                        <option value="">-- Selecciona un proyecto --</option>
+                        <option value="Taller de Resolución de Conflictos">Taller de Resolución de Conflictos</option>
+                        <option value="Programa de Inclusión Estudiantil">Programa de Inclusión Estudiantil</option>
+                        <option value="Campaña de Valores y Respeto">Campaña de Valores y Respeto</option>
+                        <option value="Actividad de Mediación Escolar">Actividad de Mediación Escolar</option>
+                        <option value="Proyecto de Convivencia Pacífica">Proyecto de Convivencia Pacífica</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Calificación de Valores:</label>
+                    <div class="rating-inputs">
+                        <div class="rating-item">
+                            <label for="paz-rating">Paz:</label>
+                            <input type="range" id="paz-rating" name="paz-rating" min="0" max="100" value="75"
+                                oninput="updateRatingDisplay('paz', this.value)">
+                            <span class="rating-display" id="paz-display">75%</span>
+                        </div>
+                        <div class="rating-item">
+                            <label for="inclusion-rating">Inclusión:</label>
+                            <input type="range" id="inclusion-rating" name="inclusion-rating" min="0" max="100"
+                                value="75" oninput="updateRatingDisplay('inclusion', this.value)">
+                            <span class="rating-display" id="inclusion-display">75%</span>
+                        </div>
+                        <div class="rating-item">
+                            <label for="respeto-rating">Respeto:</label>
+                            <input type="range" id="respeto-rating" name="respeto-rating" min="0" max="100" value="75"
+                                oninput="updateRatingDisplay('respeto', this.value)">
+                            <span class="rating-display" id="respeto-display">75%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="observaciones">Observaciones:</label>
+                    <textarea id="observaciones" name="observaciones" rows="4"
+                        placeholder="Notas adicionales sobre la medición..."></textarea>
+                </div>
+
+                <button type="submit" class="boton-principal">Guardar Calificación</button>
+            </form>
+        </section>
+
+        <section id="historial" class="history-section" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3>Historial de Calificaciones</h3>
+            </div>
+            <div id="calificaciones-list" class="calificaciones-list">
+                <p class="empty-state">No hay calificaciones registradas aún.</p>
+            </div>
+        </section>
+        -->
+    </main>
+
+    <!-- Dashboard para Administradores -->
+    <main id="dashboard-admin" class="dashboard-content" style="display: none;">
+        <section class="dashboard-header">
+            <h2>Dashboard de Administrador</h2>
+            <p class="welcome-text">Panel de control - Respuestas de encuestas</p>
+        </section>
+
+        <!-- Vista de Respuestas de Encuestas -->
+        <section id="admin-respuestas" class="admin-respuestas-section">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h3>Respuestas de Encuestas</h3>
+                <button id="btn-actualizar-respuestas" class="boton-principal"
+                    style="padding: 8px 20px; font-size: 0.9em;">Actualizar</button>
+            </div>
+            <div id="admin-respuestas-list" class="respuestas-list">
+                <p class="empty-state">Cargando respuestas...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dashboard para Profesores -->
+    <main id="dashboard-profesor" class="dashboard-content" style="display: none;">
+        <section class="dashboard-header">
+            <h2>Dashboard de Profesor</h2>
+            <p class="welcome-text">Panel de control - Respuestas de encuestas</p>
+        </section>
+
+        <!-- Vista de Respuestas de Encuestas (igual que admin) -->
+        <section id="profesor-respuestas" class="admin-respuestas-section">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h3>Respuestas de Encuestas</h3>
+                <button id="btn-actualizar-respuestas-profesor" class="boton-principal"
+                    style="padding: 8px 20px; font-size: 0.9em;">Actualizar</button>
+            </div>
+            <div id="profesor-respuestas-list" class="respuestas-list">
+                <p class="empty-state">Cargando respuestas...</p>
+            </div>
+        </section>
+
+        <!-- Secciones de Calificar e Historial - OCULTAS pero no eliminadas -->
+        <!-- 
+        <section class="metrics-section" style="display: none;">
+            <h3>Métricas de Valores</h3>
+            <div class="metrics-grid" id="metricas-valores-profesor">
+                <div class="metric-card">
+                    <div class="metric-icon">🕊️</div>
+                    <h4>Paz</h4>
+                    <div class="metric-value" id="paz-value-profesor">75%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="paz-bar-profesor" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🤝</div>
+                    <h4>Inclusión</h4>
+                    <div class="metric-value" id="inclusion-value-profesor">82%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="inclusion-bar-profesor" style="width: 82%"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🙏</div>
+                    <h4>Respeto</h4>
+                    <div class="metric-value" id="respeto-value-profesor">68%</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="respeto-bar-profesor" style="width: 68%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rating-section-profesor" class="rating-section" style="display: none;">
+            <h3>Calificar Proyecto o Medición</h3>
+            <form id="rating-form-profesor" class="rating-form">
+                <div class="form-group">
+                    <label for="proyecto-select-profesor">Seleccionar Proyecto/Actividad:</label>
+                    <select id="proyecto-select-profesor" name="proyecto-select-profesor" required>
+                        <option value="">-- Selecciona un proyecto --</option>
+                        <option value="Taller de Resolución de Conflictos">Taller de Resolución de Conflictos</option>
+                        <option value="Programa de Inclusión Estudiantil">Programa de Inclusión Estudiantil</option>
+                        <option value="Campaña de Valores y Respeto">Campaña de Valores y Respeto</option>
+                        <option value="Actividad de Mediación Escolar">Actividad de Mediación Escolar</option>
+                        <option value="Proyecto de Convivencia Pacífica">Proyecto de Convivencia Pacífica</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Calificación de Valores:</label>
+                    <div class="rating-inputs">
+                        <div class="rating-item">
+                            <label for="paz-rating-profesor">Paz:</label>
+                            <input type="range" id="paz-rating-profesor" name="paz-rating-profesor" min="0" max="100" value="75"
+                                oninput="updateRatingDisplay('paz-profesor', this.value)">
+                            <span class="rating-display" id="paz-display-profesor">75%</span>
+                        </div>
+                        <div class="rating-item">
+                            <label for="inclusion-rating-profesor">Inclusión:</label>
+                            <input type="range" id="inclusion-rating-profesor" name="inclusion-rating-profesor" min="0" max="100"
+                                value="75" oninput="updateRatingDisplay('inclusion-profesor', this.value)">
+                            <span class="rating-display" id="inclusion-display-profesor">75%</span>
+                        </div>
+                        <div class="rating-item">
+                            <label for="respeto-rating-profesor">Respeto:</label>
+                            <input type="range" id="respeto-rating-profesor" name="respeto-rating-profesor" min="0" max="100" value="75"
+                                oninput="updateRatingDisplay('respeto-profesor', this.value)">
+                            <span class="rating-display" id="respeto-display-profesor">75%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="observaciones-profesor">Observaciones:</label>
+                    <textarea id="observaciones-profesor" name="observaciones-profesor" rows="4"
+                        placeholder="Notas adicionales sobre la medición..."></textarea>
+                </div>
+
+                <button type="submit" class="boton-principal">Guardar Calificación</button>
+            </form>
+        </section>
+
+        <section id="historial-profesor" class="history-section" style="display: none;">
+            <h3>Mis Calificaciones</h3>
+            <div id="calificaciones-list-profesor" class="calificaciones-list">
+                <p class="empty-state">No hay calificaciones registradas aún.</p>
+            </div>
+        </section>
+        -->
+    </main>
+
+    <!-- Sección de Servicios (Estilo de la imagen) -->
+    <section class="services-section public-content">
+        <div class="services-container">
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Evaluación de Valores</h3>
+                <p>Ofrecemos una gama completa de herramientas de evaluación para medir los niveles de Paz, Inclusión y
+                    Respeto en instituciones educativas de todo el país.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎮</div>
+                <h3>Videojuegos Educativos</h3>
+                <p>Este servicio te permite acceder a videojuegos interactivos diseñados para enseñar valores
+                    fundamentales y recibir retroalimentación instantánea sobre el progreso.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Plataforma Digital</h3>
+                <p>Nuestra plataforma proporciona diversos servicios digitales incluyendo dashboards de análisis en
+                    tiempo real, herramientas de mediación escolar y reportes detallados.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <h3>Contacto</h3>
+        <p>¿Tienes preguntas? Contáctanos en: <a href="mailto:info@tuproyecto.com">pce-ut@gmail.com</a></p>
+        <p>&copy; 2025 Plataforma Comunicativa Estudiantil. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Script para efecto de scroll en header -->
+    <script>
+        // Efecto de scroll en el header
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <!-- ASEGÚRATE DE QUE TU APP.JS SE CARGUE DESPUÉS -->
+    <script src="js/app.js"></script>
+
+    <!-- Estado de autenticación: muestra email y botón de salir -->
+    <script type="module">
+        import { supabase } from './js/supabaseClient.js'
+
+        // Función para detectar tipo de usuario basándose en el correo
+        function getUserType(email) {
+            if (!email) return 'general'
+
+            const emailLower = email.toLowerCase()
+            const emailPrefix = emailLower.split('@')[0] // Parte antes del @
+
+            // Detectar admin (correo contiene "admin")
+            if (emailLower.includes('admin')) {
+                return 'admin'
+            }
+
+            // Detectar profesor (el prefijo del correo es "profesor" o comienza con "profesor")
+            if (emailPrefix.startsWith('profesor')) {
+                return 'profesor'
+            }
+
+            return 'general'
+        }
+
+        // Función para actualizar display de ratings
+        window.updateRatingDisplay = function (tipo, value) {
+            // Manejar IDs tanto para formulario general como para profesor
+            let elementId = `${tipo}-display`
+
+            // Si es del formulario de profesor, ajustar el ID
+            if (tipo.includes('-profesor')) {
+                // paz-profesor -> paz-display-profesor
+                const baseTipo = tipo.replace('-profesor', '')
+                elementId = `${baseTipo}-display-profesor`
+            }
+
+            const element = document.getElementById(elementId)
+            if (element) {
+                element.textContent = value + '%'
+            }
+        }
+
+        // Función para scroll suave a una sección
+        window.scrollToSection = function (sectionId) {
+            const section = document.getElementById(sectionId)
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+        }
+
+        // Función para mostrar/ocultar contenido según autenticación y tipo de usuario
+        function toggleContent(isAuthenticated, userType = 'general') {
+            const publicContent = document.querySelectorAll('.public-content')
+            const dashboardContent = document.getElementById('dashboard')
+            const dashboardAdmin = document.getElementById('dashboard-admin')
+            const dashboardProfesor = document.getElementById('dashboard-profesor')
+
+            if (isAuthenticated) {
+                publicContent.forEach(el => el.style.display = 'none')
+
+                // Ocultar todos los dashboards primero
+                if (dashboardContent) dashboardContent.style.display = 'none'
+                if (dashboardAdmin) dashboardAdmin.style.display = 'none'
+                if (dashboardProfesor) dashboardProfesor.style.display = 'none'
+
+                // Mostrar el dashboard correspondiente según el tipo de usuario
+                if (userType === 'admin' && dashboardAdmin) {
+                    dashboardAdmin.style.display = 'block'
+                    console.log('Dashboard admin mostrado')
+                } else if (userType === 'profesor' && dashboardProfesor) {
+                    dashboardProfesor.style.display = 'block'
+                    console.log('Dashboard profesor mostrado, userType:', userType)
+                    // Verificar que el elemento esté disponible
+                    setTimeout(() => {
+                        const profesorDiv = document.getElementById('profesor-respuestas-list')
+                        console.log('Verificación: profesor-respuestas-list disponible:', !!profesorDiv)
+                    }, 100)
+                } else if (dashboardContent) {
+                    dashboardContent.style.display = 'block'
+                }
+            } else {
+                publicContent.forEach(el => el.style.display = 'block')
+                if (dashboardContent) dashboardContent.style.display = 'none'
+                if (dashboardAdmin) dashboardAdmin.style.display = 'none'
+                if (dashboardProfesor) dashboardProfesor.style.display = 'none'
+            }
+        }
+
+        // Cargar todas las calificaciones de todos los maestros (para admin)
+        async function loadAllCalificaciones() {
+            const listDiv = document.getElementById('admin-calificaciones-list')
+            if (!listDiv) return
+
+            try {
+                // Obtener usuario actual para verificar que es admin
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) {
+                    listDiv.innerHTML = '<p class="empty-state">Debes iniciar sesión para ver las calificaciones.</p>'
+                    return
+                }
+
+                // Cargar todas las calificaciones desde Supabase
+                const { data: calificaciones, error } = await supabase
+                    .from('calificaciones')
+                    .select(`
+                        *,
+                        user:auth.users(email)
+                    `)
+                    .order('created_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error al cargar todas las calificaciones:', error)
+
+                    if (error.code === 'PGRST116' || error.message?.includes('does not exist')) {
+                        listDiv.innerHTML = `
+                            <div class="warning" style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                                <p><strong>⚠️ Tabla de base de datos no configurada</strong></p>
+                                <p>La tabla de calificaciones no existe aún en Supabase.</p>
+                                <p><a href="configurar-base-datos.html" target="_blank" style="color: #667eea; font-weight: bold;">👉 Ver instrucciones para configurarla</a></p>
+                            </div>
+                        `
+                        return
+                    }
+
+                    listDiv.innerHTML = '<p class="empty-state">Error al cargar las calificaciones.</p>'
+                    return
+                }
+
+                if (!calificaciones || calificaciones.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay calificaciones registradas aún.</p>'
+                    return
+                }
+
+                // Crear un mapa de user_id a email
+                // Nota: Para obtener emails de otros usuarios, necesitarías una tabla de usuarios
+                // Por ahora, mostraremos el user_id o intentaremos obtener el email del usuario actual
+                const userEmailMap = {}
+                const { data: { user: currentUser } } = await supabase.auth.getUser()
+                if (currentUser) {
+                    userEmailMap[currentUser.id] = currentUser.email
+                }
+
+                // Intentar obtener emails de otros usuarios desde una posible tabla de usuarios
+                // Si no existe, mostraremos el user_id
+                try {
+                    const { data: usuarios } = await supabase
+                        .from('usuarios')
+                        .select('id, email')
+
+                    if (usuarios) {
+                        usuarios.forEach(u => {
+                            userEmailMap[u.id] = u.email
+                        })
+                    }
+                } catch (err) {
+                    // La tabla usuarios puede no existir, continuar sin ella
+                    console.log('Tabla usuarios no disponible, usando user_id')
+                }
+
+                // Mostrar todas las calificaciones
+                listDiv.innerHTML = calificaciones.map((cal) => {
+                    const fecha = new Date(cal.created_at).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                    const emailMaestro = userEmailMap[cal.user_id] || `ID: ${cal.user_id.substring(0, 8)}...`
+
+                    return `
+                        <div class="calificacion-item">
+                            <div class="calificacion-header">
+                                <h4>${cal.proyecto_nombre}</h4>
+                                <span class="calificacion-date">${fecha}</span>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Maestro:</strong> ${emailMaestro}
+                            </div>
+                            <div class="calificacion-metrics">
+                                <span class="metric-badge paz">Paz: ${cal.paz}%</span>
+                                <span class="metric-badge inclusion">Inclusión: ${cal.inclusion}%</span>
+                                <span class="metric-badge respeto">Respeto: ${cal.respeto}%</span>
+                            </div>
+                            ${cal.observaciones ? `<p class="calificacion-obs">${cal.observaciones}</p>` : ''}
+                        </div>
+                    `
+                }).join('')
+            } catch (err) {
+                console.error('Error inesperado al cargar todas las calificaciones:', err)
+                const listDiv = document.getElementById('admin-calificaciones-list')
+                if (listDiv) {
+                    listDiv.innerHTML = '<p class="empty-state">Error al cargar las calificaciones.</p>'
+                }
+            }
+        }
+
+        // Cargar todas las respuestas de encuestas (para admin y profesor)
+        async function loadAllRespuestas() {
+            console.log('loadAllRespuestas() llamado')
+
+            // Detectar qué dashboard está visible para usar el div correcto
+            const dashboardAdmin = document.getElementById('dashboard-admin')
+            const dashboardProfesor = document.getElementById('dashboard-profesor')
+
+            let listDiv = null
+
+            // Verificar qué dashboard está visible
+            if (dashboardAdmin && dashboardAdmin.style.display !== 'none' && window.getComputedStyle(dashboardAdmin).display !== 'none') {
+                // Admin está visible, usar su div
+                listDiv = document.getElementById('admin-respuestas-list')
+                console.log('Dashboard admin visible, usando admin-respuestas-list:', !!listDiv)
+            } else if (dashboardProfesor && dashboardProfesor.style.display !== 'none' && window.getComputedStyle(dashboardProfesor).display !== 'none') {
+                // Profesor está visible, usar su div
+                listDiv = document.getElementById('profesor-respuestas-list')
+                console.log('Dashboard profesor visible, usando profesor-respuestas-list:', !!listDiv)
+            } else {
+                // Fallback: intentar ambos
+                listDiv = document.getElementById('admin-respuestas-list')
+                if (!listDiv) {
+                    listDiv = document.getElementById('profesor-respuestas-list')
+                }
+                console.log('Fallback: admin-respuestas-list:', !!document.getElementById('admin-respuestas-list'), 'profesor-respuestas-list:', !!document.getElementById('profesor-respuestas-list'))
+            }
+
+            // Si aún no existe, esperar activamente hasta que esté disponible (máximo 2 segundos)
+            if (!listDiv) {
+                console.log('No se encontró ningún div, esperando hasta que esté disponible...')
+                let attempts = 0
+                const maxAttempts = 20 // 20 intentos * 100ms = 2 segundos máximo
+                while (!listDiv && attempts < maxAttempts) {
+                    await new Promise(resolve => setTimeout(resolve, 100))
+                    // Verificar de nuevo qué dashboard está visible
+                    if (dashboardAdmin && dashboardAdmin.style.display !== 'none' && window.getComputedStyle(dashboardAdmin).display !== 'none') {
+                        listDiv = document.getElementById('admin-respuestas-list')
+                    } else if (dashboardProfesor && dashboardProfesor.style.display !== 'none' && window.getComputedStyle(dashboardProfesor).display !== 'none') {
+                        listDiv = document.getElementById('profesor-respuestas-list')
+                    } else {
+                        listDiv = document.getElementById('admin-respuestas-list')
+                        if (!listDiv) {
+                            listDiv = document.getElementById('profesor-respuestas-list')
+                        }
+                    }
+                    attempts++
+                    if (listDiv) {
+                        console.log(`Elemento encontrado después de ${attempts} intentos:`, listDiv.id)
+                        break
+                    }
+                }
+            }
+            if (!listDiv) {
+                console.error('No se pudo encontrar el elemento para mostrar respuestas después de múltiples intentos')
+                return
+            }
+            console.log('Usando elemento:', listDiv.id)
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) {
+                    listDiv.innerHTML = '<p class="empty-state">Debes iniciar sesión para ver las respuestas.</p>'
+                    return
+                }
+
+                // Consultar la tabla survey_responses
+                // Usar nombres de columnas correctos en inglés
+                // CORRECCIÓN: Usar response_text y responded_at según las instrucciones
+                const { data: respuestas, error } = await supabase
+                    .from('survey_responses')
+                    .select('id, respondent_id, question_id, survey_id, response_text, responded_at')
+                    .order('responded_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error al cargar respuestas:', error)
+
+                    if (error.code === 'PGRST116' || error.message?.includes('does not exist')) {
+                        if (listDiv) {
+                            listDiv.innerHTML = `
+                                <div class="warning" style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                                    <p><strong>⚠️ Error al cargar respuestas</strong></p>
+                                    <p>No se pudo acceder a la tabla <code>survey_responses</code>.</p>
+                                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Verifica que la tabla exista y que tengas los permisos necesarios.</p>
+                                    <p style="margin-top: 5px; font-size: 0.85em; color: #999;">Error: ${error.message}</p>
+                                </div>
+                            `
+                        }
+                        return
+                    }
+
+                    if (listDiv) {
+                        listDiv.innerHTML = `<p class="empty-state">Error al cargar las respuestas: ${error.message}</p>`
+                    }
+                    return
+                }
+
+                if (!respuestas || respuestas.length === 0) {
+                    if (listDiv) {
+                        listDiv.innerHTML = '<p class="empty-state">No hay respuestas registradas aún.</p>'
+                    }
+                    return
+                }
+
+                // Mostrar las respuestas (obtendrá emails desde auth.users)
+                if (listDiv) {
+                    await mostrarRespuestas(respuestas, listDiv)
+                }
+            } catch (err) {
+                console.error('Error inesperado al cargar respuestas:', err)
+                // Intentar obtener el div de admin primero, si no existe, usar el de profesor
+                let listDiv = document.getElementById('admin-respuestas-list')
+                if (!listDiv) {
+                    listDiv = document.getElementById('profesor-respuestas-list')
+                }
+                if (listDiv) {
+                    listDiv.innerHTML = `<p class="empty-state">Error inesperado: ${err.message}</p>`
+                } else {
+                    console.error('No se pudo encontrar ningún div para mostrar el error')
+                }
+            }
+        }
+
+        // Función auxiliar para mostrar respuestas
+        async function mostrarRespuestas(respuestas, listDiv) {
+            // Obtener el email del usuario actual para verificar si es admin
+            const { data: { user: currentUser } } = await supabase.auth.getUser()
+            const userEmail = currentUser?.email || ''
+            const isAdmin = userEmail.toLowerCase() === 'admin@gmail.com'
+
+            // Obtener todos los respondent_ids únicos (usando nombres correctos en inglés)
+            const userIds = [...new Set(respuestas.map(r => r.respondent_id || r.user_id).filter(Boolean))]
+
+            // Obtener todos los question_ids únicos (usando nombres correctos en inglés)
+            const preguntaIds = [...new Set(respuestas.map(r => r.question_id || r.pregunta_id || r.preguntaId || r.pregunta).filter(Boolean))]
+
+            // Obtener todos los comentarios de retroalimentación para estas respuestas
+            const respuestaIds = respuestas.map(r => r.id).filter(Boolean)
+            const comentariosMap = {}
+            const profesorEmailMap = {} // Mapa para almacenar emails de profesores
+
+            if (respuestaIds.length > 0) {
+                try {
+                    const { data: comentarios, error: errorComentarios } = await supabase
+                        .from('feedback')
+                        .select('id, respuesta_id, profesor_id, retro_texto, created_at')
+                        .in('respuesta_id', respuestaIds)
+
+                    if (!errorComentarios && comentarios) {
+                        comentarios.forEach(com => {
+                            comentariosMap[com.respuesta_id] = com
+                            // Agregar profesor_id a la lista para obtener su email
+                            if (com.profesor_id) {
+                                userIds.push(com.profesor_id)
+                            }
+                        })
+                    }
+                } catch (err) {
+                    console.log('Error al cargar comentarios:', err)
+                }
+            }
+
+            // Obtener emails desde auth.users usando una función RPC
+            const userEmailMap = {}
+
+            // Intentar obtener todos los emails usando función RPC
+            try {
+                // Obtener user_ids únicos (sin duplicados)
+                const uniqueUserIds = [...new Set(userIds)]
+                const emailResults = await Promise.all(
+                    uniqueUserIds.map(async (userId) => {
+                        try {
+                            // Llamar a función RPC para obtener email desde auth.users
+                            const { data: emailData, error: emailError } = await supabase
+                                .rpc('get_user_email', { user_id_param: userId })
+
+                            if (!emailError && emailData) {
+                                return { userId, email: emailData }
+                            }
+                        } catch (err) {
+                            console.log(`No se pudo obtener email para user_id ${userId}:`, err)
+                        }
+                        return null
+                    })
+                )
+
+                // Crear mapa de user_id a email
+                emailResults.forEach(result => {
+                    if (result) {
+                        userEmailMap[result.userId] = result.email
+                    }
+                })
+
+                // Crear mapa de emails de profesores desde los comentarios
+                Object.values(comentariosMap).forEach(com => {
+                    if (com.profesor_id && userEmailMap[com.profesor_id]) {
+                        profesorEmailMap[com.respuesta_id] = userEmailMap[com.profesor_id]
+                    }
+                })
+            } catch (err) {
+                console.log('Error al obtener emails:', err)
+            }
+
+            // Obtener preguntas desde la tabla survey_questions
+            const preguntaMap = {}
+            try {
+                // Obtener preguntas directamente desde la tabla survey_questions
+                const preguntaResults = await Promise.all(
+                    preguntaIds.map(async (preguntaId) => {
+                        try {
+                            const { data: preguntaFromTable, error: tableError } = await supabase
+                                .from('survey_questions')
+                                .select('question_text')
+                                .eq('question_id', preguntaId)
+                                .single()
+
+                            if (!tableError && preguntaFromTable && preguntaFromTable.question_text) {
+                                return { preguntaId, pregunta: preguntaFromTable.question_text }
+                            }
+                        } catch (tableErr) {
+                            console.log(`No se pudo obtener pregunta para pregunta_id ${preguntaId}:`, tableErr)
+                        }
+                        return null
+                    })
+                )
+
+                // Crear mapa de pregunta_id a pregunta_text
+                preguntaResults.forEach(result => {
+                    if (result) {
+                        preguntaMap[result.preguntaId] = result.pregunta
+                    }
+                })
+            } catch (err) {
+                console.log('Error al obtener preguntas:', err)
+            }
+
+            // Mostrar respuestas con todos los datos disponibles
+            listDiv.innerHTML = respuestas.map((resp) => {
+                const fecha = resp.responded_at
+                    ? new Date(resp.responded_at).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                    : 'Fecha no disponible'
+
+                // Obtener el email del usuario desde auth.users
+                let emailUsuario = 'Email no disponible'
+
+                // Priorizar email obtenido desde auth.users usando función RPC
+                const respondentId = resp.respondent_id || resp.user_id
+                if (respondentId && userEmailMap[respondentId]) {
+                    emailUsuario = userEmailMap[respondentId]
+                }
+                // Si hay campos de email directamente en la respuesta (fallback)
+                else if (resp.email) {
+                    emailUsuario = resp.email
+                } else if (resp.usuario_email) {
+                    emailUsuario = resp.usuario_email
+                } else if (resp.user_email) {
+                    emailUsuario = resp.user_email
+                } else if (resp.correo) {
+                    emailUsuario = resp.correo
+                }
+
+                // Obtener el texto de la pregunta si existe question_id
+                let preguntaTexto = null
+                const preguntaId = resp.question_id || resp.pregunta_id || resp.preguntaId || resp.pregunta
+                if (preguntaId && preguntaMap[preguntaId]) {
+                    preguntaTexto = preguntaMap[preguntaId]
+                }
+
+                // Mostrar todos los campos disponibles de la respuesta (excluyendo campos de sistema y comentarios)
+                // response_text es el campo correcto para el contenido de la respuesta
+                const campos = Object.keys(resp).filter(key =>
+                    key !== 'id' &&
+                    key !== 'respondent_id' &&
+                    key !== 'user_id' &&
+                    key !== 'created_at' &&
+                    key !== 'responded_at' &&
+                    key !== 'updated_at' &&
+                    key !== 'email' &&
+                    key !== 'usuario_email' &&
+                    key !== 'question_id' &&
+                    key !== 'pregunta_id' &&
+                    key !== 'preguntaId' &&
+                    key !== 'pregunta' &&
+                    key !== 'survey_id' &&
+                    key !== 'comentario_profesor' &&
+                    key !== 'comentario_profesor_id' &&
+                    key !== 'comentario_profesor_email' &&
+                    key !== 'comentario_created_at' &&
+                    key !== 'comentario_updated_at' &&
+                    key !== 'comentario' &&
+                    key !== 'comentario_id' &&
+                    key !== 'responses' // Excluir nombre incorrecto (debe ser response_text)
+                )
+
+                const respuestaId = resp.id
+                // Obtener comentario de la tabla feedback usando el mapa cargado
+                const comentarioData = comentariosMap[respuestaId] || null
+                const comentarioExistente = comentarioData ? comentarioData.retro_texto : ''
+                const comentarioId = comentarioData ? comentarioData.id : null
+                const profesorEmail = profesorEmailMap[respuestaId] || 'Email no disponible'
+
+                // Si es admin, mostrar solo información sin opciones de edición
+                if (isAdmin) {
+                    return `
+                        <div class="respuesta-item" data-respuesta-id="${respuestaId}">
+                            <div class="respuesta-header">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                                        <span class="respuesta-usuario">
+                                            <strong>Usuario:</strong> ${emailUsuario}
+                                        </span>
+                                        <span class="respuesta-date">${fecha}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="respuesta-content">
+                                ${preguntaTexto ? `
+                                    <div style="margin-bottom: 12px;">
+                                        <p><strong>Pregunta:</strong></p>
+                                        <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px; font-weight: 500;">
+                                            ${preguntaTexto}
+                                        </p>
+                                    </div>
+                                ` : preguntaId ? `
+                                    <div style="margin-bottom: 12px;">
+                                        <p><strong>Pregunta Id:</strong></p>
+                                        <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                            ${preguntaId} (Pregunta no encontrada en la base de datos)
+                                        </p>
+                                    </div>
+                                ` : ''}
+                                ${campos.map(campo => {
+                        const valor = resp[campo]
+                        if (valor === null || valor === undefined || valor === '') return ''
+                        // Formatear el nombre del campo, reemplazando "Respuesta Abierta" por solo "Respuesta"
+                        let nombreCampo = campo.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                        if (nombreCampo.toLowerCase().includes('respuesta abierta')) {
+                            nombreCampo = 'Respuesta'
+                        }
+                        return `
+                                        <div style="margin-bottom: 12px;">
+                                            <p><strong>${nombreCampo}:</strong></p>
+                                            <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                                ${typeof valor === 'object' ? JSON.stringify(valor, null, 2) : String(valor)}
+                                            </p>
+                                        </div>
+                                    `
+                    }).join('')}
+                                
+                                <!-- Sección de Comentario del Profesor (solo lectura para admin) -->
+                                ${comentarioExistente ? `
+                                    <div class="comentario-profesor-section" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                                        <div style="margin-bottom: 10px;">
+                                            <label style="display: block; font-weight: 600; color: var(--color-secundario); margin-bottom: 8px;">
+                                                💬 Comentario hecho por ${profesorEmail !== 'Email no disponible' ? profesorEmail : 'profesor'}:
+                                            </label>
+                                            <div style="padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid var(--color-principal);">
+                                                <p style="margin: 0; color: #333; line-height: 1.6;">${comentarioExistente}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `
+                }
+
+                // Si no es admin, mostrar con opciones de edición (comportamiento original)
+                return `
+                        <div class="respuesta-item" data-respuesta-id="${respuestaId}">
+                            <div class="respuesta-header">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                                        <span class="respuesta-usuario">
+                                            <strong>Usuario:</strong> ${emailUsuario}
+                                        </span>
+                                        <span class="respuesta-date">${fecha}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="respuesta-content">
+                                ${preguntaTexto ? `
+                                    <div style="margin-bottom: 12px;">
+                                        <p><strong>Pregunta:</strong></p>
+                                        <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px; font-weight: 500;">
+                                            ${preguntaTexto}
+                                        </p>
+                                    </div>
+                                ` : preguntaId ? `
+                                    <div style="margin-bottom: 12px;">
+                                        <p><strong>Pregunta Id:</strong></p>
+                                        <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                            ${preguntaId} (Pregunta no encontrada en la base de datos)
+                                        </p>
+                                    </div>
+                                ` : ''}
+                                ${campos.map(campo => {
+                    const valor = resp[campo]
+                    if (valor === null || valor === undefined || valor === '') return ''
+                    // Formatear el nombre del campo, reemplazando "Respuesta Abierta" por solo "Respuesta"
+                    let nombreCampo = campo.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                    if (nombreCampo.toLowerCase().includes('respuesta abierta')) {
+                        nombreCampo = 'Respuesta'
+                    }
+                    return `
+                                        <div style="margin-bottom: 12px;">
+                                            <p><strong>${nombreCampo}:</strong></p>
+                                            <p style="margin-top: 5px; line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                                ${typeof valor === 'object' ? JSON.stringify(valor, null, 2) : String(valor)}
+                                            </p>
+                                        </div>
+                                    `
+                }).join('')}
+                                
+                                <!-- Sección de Comentario del Profesor -->
+                                <div class="comentario-profesor-section" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                                    <div style="margin-bottom: 10px;">
+                                        <label style="display: block; font-weight: 600; color: var(--color-secundario); margin-bottom: 8px;">
+                                            💬 Comentario del Profesor:
+                                        </label>
+                                        ${comentarioExistente ? `
+                                            <div id="comentario-mostrado-${respuestaId}" style="margin-bottom: 10px; padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid var(--color-principal);">
+                                                <p style="margin: 0; color: #333; line-height: 1.6;">${comentarioExistente}</p>
+                                                <button onclick="editarComentario('${respuestaId}')" class="btn-editar-comentario" style="margin-top: 8px; padding: 6px 12px; background: var(--color-principal); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
+                                                    ✏️ Editar Comentario
+                                                </button>
+                                            </div>
+                                        ` : ''}
+                                        <div id="comentario-editor-${respuestaId}" style="${comentarioExistente ? 'display: none;' : ''}">
+                                            <textarea 
+                                                id="comentario-text-${respuestaId}" 
+                                                rows="4" 
+                                                placeholder="Escribe tu comentario sobre esta respuesta..."
+                                                style="width: 100%; padding: 12px; border: 2px solid var(--color-gris-claro); border-radius: 8px; font-family: var(--fuente-principal); font-size: 1em; resize: vertical; transition: border-color 0.3s ease;"
+                                                onfocus="this.style.borderColor='var(--color-principal)'"
+                                                onblur="this.style.borderColor='var(--color-gris-claro)'"
+                                            >${comentarioExistente}</textarea>
+                                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                                <button 
+                                                    onclick="guardarComentario('${respuestaId}', '${comentarioId || ''}')" 
+                                                    class="btn-guardar-comentario" 
+                                                    style="padding: 10px 20px; background: var(--gradiente-principal); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95em; transition: all 0.3s ease; box-shadow: var(--sombra-suave);"
+                                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--sombra-media)'"
+                                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--sombra-suave)'"
+                                                >
+                                                    💾 Guardar Comentario
+                                                </button>
+                                                ${comentarioExistente ? `
+                                                    <button 
+                                                        onclick="cancelarEdicionComentario('${respuestaId}')" 
+                                                        style="padding: 10px 20px; background: var(--color-gris-medio); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95em; transition: all 0.3s ease;"
+                                                        onmouseover="this.style.background='#6c757d'"
+                                                        onmouseout="this.style.background='var(--color-gris-medio)'"
+                                                    >
+                                                        Cancelar
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+            }).join('')
+        }
+
+        // Función para guardar comentario del profesor (global)
+        window.guardarComentario = async function (respuestaId, comentarioIdExistente) {
+            const comentarioTextarea = document.getElementById(`comentario-text-${respuestaId}`)
+            if (!comentarioTextarea) {
+                console.error('No se encontró el textarea del comentario')
+                return
+            }
+
+            const comentarioTexto = comentarioTextarea.value.trim()
+            if (!comentarioTexto) {
+                // Validación silenciosa - solo retornar sin mostrar mensaje
+                return
+            }
+
+            // Obtener usuario actual (profesor) y asegurar que tenemos el ID
+            const { data: { user }, error: userError } = await supabase.auth.getUser()
+            if (userError || !user) {
+                console.error('Error: No hay sesión activa')
+                return
+            }
+
+            // Obtener el ID del usuario y asignarlo al campo profesor_id
+            const profesorId = user.id
+
+            // Verificar que el profesorId existe antes de continuar
+            if (!profesorId) {
+                console.error('Error: No se pudo obtener el ID del profesor')
+                return
+            }
+
+            console.log('Profesor ID obtenido:', profesorId)
+            console.log('Respuesta ID:', respuestaId)
+            console.log('Comentario texto:', comentarioTexto)
+
+            try {
+                // Implementar patrón UPSERT (Update or Insert) usando .upsert()
+                // Esto maneja automáticamente tanto la inserción como la actualización
+                // CRÍTICO: El objeto debe incluir explícitamente profesor_id con el UUID del usuario logueado
+                const feedbackData = {
+                    respuesta_id: respuestaId,  // [1] El ID de la respuesta del estudiante
+                    profesor_id: user.id,       // [2] ¡CRÍTICO! EL UUID del profesor (obtenido directamente de user.id)
+                    retro_texto: comentarioTexto // [3] El texto del comentario
+                    // Nota: created_at se llena automáticamente
+                }
+
+                console.log('Ejecutando UPSERT con datos:', feedbackData)
+                console.log('Verificación - profesor_id (user.id):', user.id)
+                console.log('Verificación - profesor_id (profesorId):', profesorId)
+
+                // Usar .upsert() que maneja automáticamente INSERT o UPDATE
+                // Patrón UPSERT: Si existe un registro con el mismo respuesta_id, lo actualiza
+                // Si no existe, crea uno nuevo
+                // Esto evita problemas de RLS y maneja automáticamente ambos casos de forma segura
+                const { data, error } = await supabase
+                    .from('feedback')
+                    .upsert(feedbackData, {
+                        onConflict: 'respuesta_id',  // Usar respuesta_id como clave de conflicto (debe ser UNIQUE en la tabla)
+                        ignoreDuplicates: false       // Actualizar si existe duplicado
+                    })
+                    .select()
+
+                if (error) {
+                    console.error('Error al guardar/actualizar comentario:', error)
+                    console.error('Datos que se intentaron insertar/actualizar:', feedbackData)
+                    console.error('profesor_id enviado:', feedbackData.profesor_id)
+                    throw error
+                }
+
+                // Comentario guardado silenciosamente sin mostrar mensaje
+                console.log('Comentario guardado exitosamente:', data)
+
+                // Ocultar el editor y mostrar el comentario guardado
+                const editorDiv = document.getElementById(`comentario-editor-${respuestaId}`)
+                const comentarioMostradoDiv = document.getElementById(`comentario-mostrado-${respuestaId}`)
+
+                if (editorDiv) {
+                    editorDiv.style.display = 'none'
+                }
+
+                // Crear o actualizar el div de comentario mostrado
+                const respuestaItem = document.querySelector(`[data-respuesta-id="${respuestaId}"]`)
+                if (respuestaItem) {
+                    const comentarioSection = respuestaItem.querySelector('.comentario-profesor-section')
+                    if (comentarioSection) {
+                        let mostrarDiv = comentarioMostradoDiv
+                        if (!mostrarDiv) {
+                            mostrarDiv = document.createElement('div')
+                            mostrarDiv.id = `comentario-mostrado-${respuestaId}`
+                            mostrarDiv.style.cssText = 'margin-bottom: 10px; padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid var(--color-principal);'
+                            const labelDiv = comentarioSection.querySelector('div')
+                            if (labelDiv) {
+                                labelDiv.appendChild(mostrarDiv)
+                            }
+                        }
+                        mostrarDiv.innerHTML = `
+                            <p style="margin: 0; color: #333; line-height: 1.6;">${comentarioTexto}</p>
+                            <button onclick="editarComentario('${respuestaId}')" class="btn-editar-comentario" style="margin-top: 8px; padding: 6px 12px; background: var(--color-principal); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
+                                ✏️ Editar Comentario
+                            </button>
+                        `
+                    }
+                }
+
+                // Recargar las respuestas para mostrar el comentario actualizado
+                setTimeout(() => {
+                    loadAllRespuestas()
+                }, 500)
+
+            } catch (err) {
+                console.error('Error al guardar comentario:', err)
+                // Error registrado en consola sin mostrar alerta al usuario
+            }
+        }
+
+        // Función para editar comentario (global)
+        window.editarComentario = function (respuestaId) {
+            const comentarioMostrado = document.getElementById(`comentario-mostrado-${respuestaId}`)
+            const editorDiv = document.getElementById(`comentario-editor-${respuestaId}`)
+            const comentarioTextarea = document.getElementById(`comentario-text-${respuestaId}`)
+
+            if (comentarioMostrado) {
+                comentarioMostrado.style.display = 'none'
+            }
+
+            if (editorDiv) {
+                editorDiv.style.display = 'block'
+            }
+
+            if (comentarioTextarea) {
+                comentarioTextarea.focus()
+            }
+        }
+
+        // Función para cancelar edición de comentario (global)
+        window.cancelarEdicionComentario = function (respuestaId) {
+            const comentarioMostrado = document.getElementById(`comentario-mostrado-${respuestaId}`)
+            const editorDiv = document.getElementById(`comentario-editor-${respuestaId}`)
+
+            if (comentarioMostrado) {
+                comentarioMostrado.style.display = 'block'
+            }
+
+            if (editorDiv) {
+                editorDiv.style.display = 'none'
+            }
+        }
+
+        // Cargar calificaciones desde Supabase (con fallback a localStorage)
+        async function loadCalificaciones() {
+            const listDiv = document.getElementById('calificaciones-list')
+            if (!listDiv) return
+
+            try {
+                // Obtener usuario actual
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) {
+                    listDiv.innerHTML = '<p class="empty-state">Debes iniciar sesión para ver tus calificaciones.</p>'
+                    return
+                }
+
+                // Cargar desde Supabase
+                const { data: calificaciones, error } = await supabase
+                    .from('calificaciones')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error al cargar calificaciones:', error)
+
+                    // Si la tabla no existe, mostrar mensaje útil
+                    if (error.code === 'PGRST116' || error.message?.includes('does not exist') || error.message?.includes('relation') && error.message?.includes('does not exist')) {
+                        listDiv.innerHTML = `
+                            <div class="warning" style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                                <p><strong>⚠️ Tabla de base de datos no configurada</strong></p>
+                                <p>La tabla de calificaciones no existe aún en Supabase.</p>
+                                <p><a href="configurar-base-datos.html" target="_blank" style="color: #667eea; font-weight: bold;">👉 Ver instrucciones para configurarla</a></p>
+                                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Mientras tanto, se mostrarán las calificaciones guardadas localmente.</p>
+                            </div>
+                        `
+                        // Intentar cargar desde localStorage
+                        setTimeout(() => loadCalificacionesFromLocalStorage(), 1000)
+                        return
+                    }
+
+                    // Fallback a localStorage si hay otro tipo de error
+                    loadCalificacionesFromLocalStorage()
+                    return
+                }
+
+                if (!calificaciones || calificaciones.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay calificaciones registradas aún.</p>'
+                    return
+                }
+
+                // Mostrar calificaciones
+                listDiv.innerHTML = calificaciones.map((cal) => {
+                    const fecha = new Date(cal.created_at).toLocaleDateString('es-ES')
+                    return `
+                        <div class="calificacion-item">
+                            <div class="calificacion-header">
+                                <h4>${cal.proyecto_nombre}</h4>
+                                <span class="calificacion-date">${fecha}</span>
+                            </div>
+                            <div class="calificacion-metrics">
+                                <span class="metric-badge paz">Paz: ${cal.paz}%</span>
+                                <span class="metric-badge inclusion">Inclusión: ${cal.inclusion}%</span>
+                                <span class="metric-badge respeto">Respeto: ${cal.respeto}%</span>
+                            </div>
+                            ${cal.observaciones ? `<p class="calificacion-obs">${cal.observaciones}</p>` : ''}
+                        </div>
+                    `
+                }).join('')
+            } catch (err) {
+                console.error('Error inesperado al cargar calificaciones:', err)
+                loadCalificacionesFromLocalStorage()
+            }
+        }
+
+        // Función auxiliar: cargar desde localStorage como fallback
+        function loadCalificacionesFromLocalStorage() {
+            const listDiv = document.getElementById('calificaciones-list')
+            if (!listDiv) return
+
+            const stored = localStorage.getItem('calificaciones')
+            const calificaciones = stored ? JSON.parse(stored) : []
+
+            if (calificaciones.length === 0) {
+                listDiv.innerHTML = '<p class="empty-state">No hay calificaciones registradas aún.</p>'
+                return
+            }
+
+            listDiv.innerHTML = calificaciones.map((cal) => `
+                <div class="calificacion-item">
+                    <div class="calificacion-header">
+                        <h4>${cal.proyecto}</h4>
+                        <span class="calificacion-date">${cal.fecha}</span>
+                    </div>
+                    <div class="calificacion-metrics">
+                        <span class="metric-badge paz">Paz: ${cal.paz}%</span>
+                        <span class="metric-badge inclusion">Inclusión: ${cal.inclusion}%</span>
+                        <span class="metric-badge respeto">Respeto: ${cal.respeto}%</span>
+                    </div>
+                    ${cal.observaciones ? `<p class="calificacion-obs">${cal.observaciones}</p>` : ''}
+                </div>
+            `).join('')
+        }
+
+        // Cargar calificaciones del profesor
+        async function loadCalificacionesProfesor() {
+            const listDiv = document.getElementById('calificaciones-list-profesor')
+            if (!listDiv) return
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) {
+                    listDiv.innerHTML = '<p class="empty-state">Debes iniciar sesión para ver tus calificaciones.</p>'
+                    return
+                }
+
+                const { data: calificaciones, error } = await supabase
+                    .from('calificaciones')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error al cargar calificaciones:', error)
+                    if (error.code === 'PGRST116' || error.message?.includes('does not exist')) {
+                        listDiv.innerHTML = `
+                            <div class="warning" style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                                <p><strong>⚠️ Tabla de base de datos no configurada</strong></p>
+                                <p>La tabla de calificaciones no existe aún en Supabase.</p>
+                                <p><a href="configurar-base-datos.html" target="_blank" style="color: #667eea; font-weight: bold;">👉 Ver instrucciones para configurarla</a></p>
+                            </div>
+                        `
+                        return
+                    }
+                    loadCalificacionesFromLocalStorage()
+                    return
+                }
+
+                if (!calificaciones || calificaciones.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay calificaciones registradas aún.</p>'
+                    return
+                }
+
+                listDiv.innerHTML = calificaciones.map((cal) => {
+                    const fecha = new Date(cal.created_at).toLocaleDateString('es-ES')
+                    return `
+                        <div class="calificacion-item">
+                            <div class="calificacion-header">
+                                <h4>${cal.proyecto_nombre}</h4>
+                                <span class="calificacion-date">${fecha}</span>
+                            </div>
+                            <div class="calificacion-metrics">
+                                <span class="metric-badge paz">Paz: ${cal.paz}%</span>
+                                <span class="metric-badge inclusion">Inclusión: ${cal.inclusion}%</span>
+                                <span class="metric-badge respeto">Respeto: ${cal.respeto}%</span>
+                            </div>
+                            ${cal.observaciones ? `<p class="calificacion-obs">${cal.observaciones}</p>` : ''}
+                        </div>
+                    `
+                }).join('')
+            } catch (err) {
+                console.error('Error inesperado al cargar calificaciones:', err)
+                loadCalificacionesFromLocalStorage()
+            }
+        }
+
+        // Manejar formulario de calificación (general)
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('rating-form')
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault()
+
+                    const proyectoSelect = document.getElementById('proyecto-select')
+                    const proyecto = proyectoSelect ? proyectoSelect.value.trim() : ''
+                    const paz = parseInt(document.getElementById('paz-rating').value)
+                    const inclusion = parseInt(document.getElementById('inclusion-rating').value)
+                    const respeto = parseInt(document.getElementById('respeto-rating').value)
+                    const observaciones = document.getElementById('observaciones').value.trim()
+
+                    // Validar campos requeridos
+                    if (!proyecto) {
+                        alert('⚠️ Por favor, selecciona un proyecto de la lista o agrega uno nuevo.')
+                        return
+                    }
+
+                    // Mostrar indicador de carga
+                    const submitButton = form.querySelector('button[type="submit"]')
+                    const originalButtonText = submitButton.textContent
+                    submitButton.disabled = true
+                    submitButton.textContent = 'Guardando...'
+
+                    try {
+                        // Obtener usuario actual
+                        const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+                        if (userError || !user) {
+                            throw new Error('No hay sesión activa. Por favor, inicia sesión nuevamente.')
+                        }
+
+                        // Guardar en Supabase
+                        const { data, error } = await supabase
+                            .from('calificaciones')
+                            .insert([
+                                {
+                                    user_id: user.id,
+                                    proyecto_nombre: proyecto,
+                                    paz: paz,
+                                    inclusion: inclusion,
+                                    respeto: respeto,
+                                    observaciones: observaciones || null
+                                }
+                            ])
+                            .select()
+
+                        if (error) {
+                            // Si la tabla no existe o hay otro error
+                            console.error('Error al guardar en Supabase:', error)
+
+                            // Verificar si es error de tabla no encontrada
+                            if (error.code === 'PGRST116' || error.message?.includes('does not exist') || error.message?.includes('relation') && error.message?.includes('does not exist')) {
+                                const configurar = confirm('⚠️ La tabla de base de datos no está configurada aún.\n\n¿Quieres ver las instrucciones para configurarla?\n\n(Si cancelas, se guardará localmente)')
+
+                                if (configurar) {
+                                    window.open('configurar-base-datos.html', '_blank')
+                                }
+                            }
+
+                            // Fallback a localStorage
+                            const stored = localStorage.getItem('calificaciones')
+                            const calificaciones = stored ? JSON.parse(stored) : []
+
+                            calificaciones.unshift({
+                                proyecto,
+                                paz,
+                                inclusion,
+                                respeto,
+                                observaciones,
+                                fecha: new Date().toLocaleDateString('es-ES')
+                            })
+
+                            localStorage.setItem('calificaciones', JSON.stringify(calificaciones))
+                            // Calificación guardada localmente, se mostrará en el historial
+                        } else {
+                            // Calificación guardada exitosamente, se mostrará en el historial
+                        }
+
+                        // Actualizar métricas visuales
+                        updateMetrics(paz, inclusion, respeto)
+
+                        // Recargar lista
+                        await loadCalificaciones()
+
+                        // Resetear formulario
+                        form.reset()
+                        updateRatingDisplay('paz', 75)
+                        updateRatingDisplay('inclusion', 75)
+                        updateRatingDisplay('respeto', 75)
+
+                    } catch (err) {
+                        console.error('Error al guardar calificación:', err)
+                        alert('❌ Error al guardar: ' + (err.message || 'Error desconocido'))
+                    } finally {
+                        // Restaurar botón
+                        submitButton.disabled = false
+                        submitButton.textContent = originalButtonText
+                    }
+                })
+            }
+
+            // Manejar formulario de calificación del profesor
+            const formProfesor = document.getElementById('rating-form-profesor')
+            if (formProfesor) {
+                formProfesor.addEventListener('submit', async (e) => {
+                    e.preventDefault()
+
+                    const proyectoSelect = document.getElementById('proyecto-select-profesor')
+                    const proyecto = proyectoSelect ? proyectoSelect.value.trim() : ''
+                    const paz = parseInt(document.getElementById('paz-rating-profesor').value)
+                    const inclusion = parseInt(document.getElementById('inclusion-rating-profesor').value)
+                    const respeto = parseInt(document.getElementById('respeto-rating-profesor').value)
+                    const observaciones = document.getElementById('observaciones-profesor').value.trim()
+
+                    if (!proyecto) {
+                        alert('⚠️ Por favor, selecciona un proyecto de la lista.')
+                        return
+                    }
+
+                    const submitButton = formProfesor.querySelector('button[type="submit"]')
+                    const originalButtonText = submitButton.textContent
+                    submitButton.disabled = true
+                    submitButton.textContent = 'Guardando...'
+
+                    try {
+                        const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+                        if (userError || !user) {
+                            throw new Error('No hay sesión activa. Por favor, inicia sesión nuevamente.')
+                        }
+
+                        const { data, error } = await supabase
+                            .from('calificaciones')
+                            .insert([
+                                {
+                                    user_id: user.id,
+                                    proyecto_nombre: proyecto,
+                                    paz: paz,
+                                    inclusion: inclusion,
+                                    respeto: respeto,
+                                    observaciones: observaciones || null
+                                }
+                            ])
+                            .select()
+
+                        if (error) {
+                            console.error('Error al guardar en Supabase:', error)
+
+                            if (error.code === 'PGRST116' || error.message?.includes('does not exist')) {
+                                const configurar = confirm('⚠️ La tabla de base de datos no está configurada aún.\n\n¿Quieres ver las instrucciones para configurarla?\n\n(Si cancelas, se guardará localmente)')
+
+                                if (configurar) {
+                                    window.open('configurar-base-datos.html', '_blank')
+                                }
+                            }
+
+                            const stored = localStorage.getItem('calificaciones')
+                            const calificaciones = stored ? JSON.parse(stored) : []
+
+                            calificaciones.unshift({
+                                proyecto,
+                                paz,
+                                inclusion,
+                                respeto,
+                                observaciones,
+                                fecha: new Date().toLocaleDateString('es-ES')
+                            })
+
+                            localStorage.setItem('calificaciones', JSON.stringify(calificaciones))
+                            // Calificación guardada localmente, se mostrará en el historial
+                        } else {
+                            // Calificación guardada exitosamente, se mostrará en el historial
+                        }
+
+                        updateMetricsProfesor(paz, inclusion, respeto)
+                        await loadCalificacionesProfesor()
+
+                        formProfesor.reset()
+                        updateRatingDisplay('paz-profesor', 75)
+                        updateRatingDisplay('inclusion-profesor', 75)
+                        updateRatingDisplay('respeto-profesor', 75)
+
+                    } catch (err) {
+                        console.error('Error al guardar calificación:', err)
+                        alert('❌ Error al guardar: ' + (err.message || 'Error desconocido'))
+                    } finally {
+                        submitButton.disabled = false
+                        submitButton.textContent = originalButtonText
+                    }
+                })
+            }
+        })
+
+        // Actualizar métricas visuales del profesor
+        function updateMetricsProfesor(paz, inclusion, respeto) {
+            const pazValue = document.getElementById('paz-value-profesor')
+            const pazBar = document.getElementById('paz-bar-profesor')
+            const inclusionValue = document.getElementById('inclusion-value-profesor')
+            const inclusionBar = document.getElementById('inclusion-bar-profesor')
+            const respetoValue = document.getElementById('respeto-value-profesor')
+            const respetoBar = document.getElementById('respeto-bar-profesor')
+
+            if (pazValue) pazValue.textContent = paz + '%'
+            if (pazBar) pazBar.style.width = paz + '%'
+            if (inclusionValue) inclusionValue.textContent = inclusion + '%'
+            if (inclusionBar) inclusionBar.style.width = inclusion + '%'
+            if (respetoValue) respetoValue.textContent = respeto + '%'
+            if (respetoBar) respetoBar.style.width = respeto + '%'
+        }
+
+        // Actualizar métricas visuales
+        function updateMetrics(paz, inclusion, respeto) {
+            const pazValue = document.getElementById('paz-value')
+            const pazBar = document.getElementById('paz-bar')
+            const inclusionValue = document.getElementById('inclusion-value')
+            const inclusionBar = document.getElementById('inclusion-bar')
+            const respetoValue = document.getElementById('respeto-value')
+            const respetoBar = document.getElementById('respeto-bar')
+
+            if (pazValue) pazValue.textContent = paz + '%'
+            if (pazBar) pazBar.style.width = paz + '%'
+            if (inclusionValue) inclusionValue.textContent = inclusion + '%'
+            if (inclusionBar) inclusionBar.style.width = inclusion + '%'
+            if (respetoValue) respetoValue.textContent = respeto + '%'
+            if (respetoBar) respetoBar.style.width = respeto + '%'
+        }
+
+        function renderAuth(user) {
+            const authArea = document.getElementById('auth-area')
+            const topAuthArea = document.getElementById('top-auth-area')
+            if (!authArea) return
+
+            const isAuthenticated = !!user
+            const userType = isAuthenticated ? getUserType(user.email) : 'general'
+
+            // Primero mostrar/ocultar contenido
+            toggleContent(isAuthenticated, userType)
+
+            // Elementos de navegación
+            const navAcerca = document.getElementById('nav-acerca')
+            const navCaracteristicas = document.getElementById('nav-caracteristicas')
+            const navApps = document.getElementById('nav-apps')
+            const navCalificar = document.getElementById('nav-calificar')
+            const navHistorial = document.getElementById('nav-historial')
+            const navHistorialProfesor = document.getElementById('nav-historial-profesor')
+
+            if (isAuthenticated) {
+                const email = user.email || 'Usuario'
+                authArea.innerHTML = `<a id="user-email" href="mailto:${email}">${email}</a> · <a id="logout-link" href="#">Cerrar sesión</a>`
+
+                // Actualizar barra superior también
+                if (topAuthArea) {
+                    topAuthArea.innerHTML = `<a id="top-user-email" href="mailto:${email}">${email}</a> · <a id="top-logout-link" href="#">Cerrar sesión</a>`
+                    const topLogoutLink = document.getElementById('top-logout-link')
+                    if (topLogoutLink) {
+                        topLogoutLink.addEventListener('click', async (e) => {
+                            e.preventDefault()
+                            await supabase.auth.signOut()
+                            window.location.href = 'index.html'
+                        })
+                    }
+                }
+
+                const link = document.getElementById('logout-link')
+                if (link) {
+                    link.addEventListener('click', async (e) => {
+                        e.preventDefault()
+                        await supabase.auth.signOut()
+                        window.location.href = 'index.html'
+                    })
+                }
+
+                // Ocultar elementos para usuarios no autenticados
+                if (navAcerca) navAcerca.style.display = 'none'
+                if (navCaracteristicas) navCaracteristicas.style.display = 'none'
+                if (navApps) navApps.style.display = 'none'
+
+                // Mostrar/ocultar elementos según el tipo de usuario
+                if (userType === 'admin') {
+                    // Admin: no necesita ver calificar ni historial (ve todo en su dashboard)
+                    if (navCalificar) navCalificar.style.display = 'none'
+                    if (navHistorial) navHistorial.style.display = 'none'
+                    if (navHistorialProfesor) navHistorialProfesor.style.display = 'none'
+                    // Cargar respuestas de encuestas
+                    loadAllRespuestas()
+
+                    // Configurar event listener para botón de actualizar respuestas
+                    setTimeout(() => {
+                        const btnActualizar = document.getElementById('btn-actualizar-respuestas')
+                        if (btnActualizar) {
+                            btnActualizar.addEventListener('click', () => {
+                                loadAllRespuestas()
+                            })
+                        }
+                    }, 500)
+                } else if (userType === 'profesor') {
+                    // Profesor: tiene acceso a las mismas funciones que admin (ver respuestas de encuestas)
+                    // Ocultar elementos de calificar e historial
+                    if (navCalificar) navCalificar.style.display = 'none'
+                    if (navHistorial) navHistorial.style.display = 'none'
+                    if (navHistorialProfesor) navHistorialProfesor.style.display = 'none'
+                    // Cargar respuestas de encuestas después de que el dashboard esté visible
+                    console.log('Usuario profesor detectado, preparando carga de respuestas...')
+                    setTimeout(() => {
+                        console.log('Intentando cargar respuestas para profesor...')
+                        const profesorDiv = document.getElementById('profesor-respuestas-list')
+                        console.log('Elemento profesor-respuestas-list encontrado:', !!profesorDiv)
+                        if (profesorDiv) {
+                            loadAllRespuestas()
+                        } else {
+                            console.error('No se encontró profesor-respuestas-list, reintentando...')
+                            setTimeout(() => {
+                                loadAllRespuestas()
+                            }, 300)
+                        }
+                    }, 300)
+
+                    // Configurar event listener para botón de actualizar respuestas del profesor
+                    setTimeout(() => {
+                        const btnActualizar = document.getElementById('btn-actualizar-respuestas-profesor')
+                        if (btnActualizar) {
+                            btnActualizar.addEventListener('click', () => {
+                                loadAllRespuestas()
+                            })
+                        }
+                    }, 500)
+                } else {
+                    // Usuario general: ocultar calificar e historial (igual que admin y profesor)
+                    if (navCalificar) navCalificar.style.display = 'none'
+                    if (navHistorial) navHistorial.style.display = 'none'
+                    if (navHistorialProfesor) navHistorialProfesor.style.display = 'none'
+                    // Las secciones de calificar e historial están ocultas en el HTML
+                }
+            } else {
+                authArea.innerHTML = `<a id="login-link" href="login.html">Iniciar Sesión</a>`
+                // Actualizar barra superior también
+                const topAuthArea = document.getElementById('top-auth-area')
+                if (topAuthArea) {
+                    topAuthArea.innerHTML = '<a id="top-login-link" href="login.html">Iniciar Sesión</a>'
+                }
+
+                // Mostrar elementos para usuarios no autenticados
+                if (navAcerca) navAcerca.style.display = 'block'
+                if (navCaracteristicas) navCaracteristicas.style.display = 'block'
+                if (navApps) navApps.style.display = 'block'
+
+                // Ocultar elementos para usuarios autenticados
+                if (navCalificar) navCalificar.style.display = 'none'
+                if (navHistorial) navHistorial.style.display = 'none'
+                if (navHistorialProfesor) navHistorialProfesor.style.display = 'none'
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1) Sesión rápida desde storage
+            const sessionRes = await supabase.auth.getSession()
+            if (sessionRes?.data?.session?.user) {
+                renderAuth(sessionRes.data.session.user)
+            } else {
+                // 2) Fallback a getUser(): tras redirección puede tardar en hidratar
+                try {
+                    const userRes = await supabase.auth.getUser()
+                    renderAuth(userRes?.data?.user || null)
+                } catch (_e) {
+                    renderAuth(null)
+                }
+            }
+
+            // 3) Escuchar cambios de auth (login/logout)
+            supabase.auth.onAuthStateChange((_e, session) => {
+                renderAuth(session?.user || null)
+            })
+        })
+    </script>
+</body>
+
+</html>

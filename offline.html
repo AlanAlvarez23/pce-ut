@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Estás Sin Conexión! | PCE-UT</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        /* Estilos específicos para la página offline si deseas un diseño más minimalista */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--color-fondo, #ecf0f1);
+            color: var(--color-texto, #333);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .offline-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+        }
+
+        .offline-box h2 {
+            color: var(--color-principal, #3498db);
+            font-size: 2.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .offline-box p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .offline-box a {
+            color: var(--color-secundario, #2c3e50);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="offline-box">
+        <h2>🔌 Sin Conexión</h2>
+        <p>Parece que has perdido la conexión a internet.</p>
+
+        <p>
+            Como esta aplicación es el **Centro de Control** y requiere datos en tiempo real de la API, gran parte del
+            Dashboard no puede cargarse sin una conexión.
+        </p>
+
+        <p>
+            Por favor, verifica tu red Wi-Fi o datos móviles e intenta <a href="index.html">recargar la página</a>.
+        </p>
+
+        <p class="small-text">
+            Si la página que buscabas está precacheada, puedes seguir navegando. De lo contrario, inténtalo de nuevo
+            cuando la conexión regrese.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+# 1. ESPECIFICAR LA IMAGEN BASE: Usamos Nginx en su versión Alpine (ligera).
+FROM nginx:alpine
+
+# 2. COPIAR ARCHIVOS: Copiamos todos los archivos del directorio actual (el .)
+# al directorio donde Nginx busca archivos para servir (/usr/share/nginx/html/).
+COPY . /usr/share/nginx/html/
+
+# 3. PUERTO: Informa a Docker que el contenedor escuchará en el puerto 80.
+EXPOSE 80
