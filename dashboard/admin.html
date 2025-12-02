@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCE-UT | Dashboard Administrador</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="manifest" href="../js/manifest.json">
+</head>
+
+<body>
+    <!-- Barra superior de contacto -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span>📧 contacto@pceut.edu.mx</span>
+            <span class="separator">|</span>
+            <span>📞 +52 81-45-34-28-08</span>
+        </div>
+        <div class="top-bar-right">
+            <span id="top-auth-area"></span>
+        </div>
+    </div>
+
+    <!-- Header principal -->
+    <header>
+        <div class="header-container">
+            <h1>Plataforma Comunicativa Estudiantil</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li id="auth-area"><a id="logout-link" href="#">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard de Administración -->
+    <main class="dashboard-content">
+        <section class="dashboard-header">
+            <h2>Panel de Administración</h2>
+            <p class="welcome-text">Bienvenido, Administrador</p>
+        </section>
+
+        <!-- Estadísticas Globales -->
+        <section class="metrics-section">
+            <h3>Estadísticas Globales</h3>
+            <div class="metrics-grid" id="metricas-globales">
+                <div class="metric-card">
+                    <div class="metric-icon">👥</div>
+                    <h4>Total de Usuarios</h4>
+                    <div class="metric-value" id="total-usuarios">0</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <h4>Encuestas Completadas</h4>
+                    <div class="metric-value" id="encuestas-completadas">0</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📈</div>
+                    <h4>Tasa de Finalización</h4>
+                    <div class="metric-value" id="tasa-finalizacion">0%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Usuarios -->
+        <section class="admin-section">
+            <h3>Gestión de Usuarios</h3>
+            <div class="admin-controls">
+                <button id="btn-actualizar-usuarios" class="btn-actualizar">Actualizar Lista</button>
+                <button id="btn-crear-usuario" class="btn-crear">Crear Usuario</button>
+            </div>
+            <div id="usuarios-list" class="admin-list">
+                <p class="empty-state">Cargando usuarios...</p>
+            </div>
+        </section>
+
+        <!-- Gestión de Encuestas -->
+        <section class="admin-section">
+            <h3>Gestión de Encuestas</h3>
+            <div class="admin-controls">
+                <button id="btn-actualizar-encuestas" class="btn-actualizar">Actualizar Lista</button>
+                <button id="btn-crear-encuesta" class="btn-crear">Crear Encuesta</button>
+            </div>
+            <div id="encuestas-list" class="admin-list">
+                <p class="empty-state">Cargando encuestas...</p>
+            </div>
+        </section>
+
+        <!-- Respuestas de Encuestas -->
+        <section class="admin-section">
+            <h3>Todas las Respuestas de Encuestas</h3>
+            <div class="admin-controls">
+                <button id="btn-actualizar-respuestas" class="btn-actualizar">Actualizar</button>
+            </div>
+            <div id="admin-respuestas-list" class="respuestas-list">
+                <p class="empty-state">Cargando respuestas...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contacto">
+        <h3>Contacto</h3>
+        <p>¿Tienes preguntas? Contáctanos en: <a href="mailto:pce-ut@gmail.com">pce-ut@gmail.com</a></p>
+        <p>&copy; 2025 Plataforma Comunicativa Estudiantil. Todos los derechos reservados.</p>
+    </footer>
+
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+
+        // Verificar autenticación y rol
+        async function checkAuth() {
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser()
+                const userRole = localStorage.getItem('userRole')
+
+                if (error || !user || userRole !== 'admin') {
+                    // Si no es admin, mostrar mensaje y redirigir
+                    alert('❌ Acceso Denegado: Solo los administradores pueden acceder a este panel.')
+                    localStorage.removeItem('userRole')
+                    window.location.href = '../index.html'
+                    return null
+                }
+
+                return user
+            } catch (err) {
+                console.error('Error de autenticación:', err)
+                alert('❌ Error de autenticación. Por favor, inicia sesión nuevamente.')
+                localStorage.removeItem('userRole')
+                window.location.href = '../index.html'
+                return null
+            }
+        }
+
+        // Renderizar información de usuario
+        async function renderAuth(user) {
+            const authArea = document.getElementById('auth-area')
+            const topAuthArea = document.getElementById('top-auth-area')
+
+            if (user) {
+                const email = user.email || 'Administrador'
+                if (authArea) {
+                    authArea.innerHTML = `<a id="user-email" href="mailto:${email}">${email}</a> · <a id="logout-link" href="#">Cerrar sesión</a>`
+                }
+                if (topAuthArea) {
+                    topAuthArea.innerHTML = `<a href="mailto:${email}">${email}</a>`
+                }
+
+                const logoutLink = document.getElementById('logout-link')
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', async (e) => {
+                        e.preventDefault()
+                        localStorage.removeItem('userRole')
+                        await supabase.auth.signOut()
+                        window.location.href = '../index.html'
+                    })
+                }
+            }
+        }
+
+        // Cargar estadísticas globales
+        async function loadEstadisticas() {
+            try {
+                // Cargar total de usuarios
+                const { data: usuarios, error: usuariosError } = await supabase
+                    .from('users')
+                    .select('id', { count: 'exact' })
+
+                if (!usuariosError && usuarios) {
+                    document.getElementById('total-usuarios').textContent = usuarios.length || 0
+                }
+
+                // Cargar encuestas completadas
+                const { data: respuestas, error: respuestasError } = await supabase
+                    .from('survey_responses')
+                    .select('id', { count: 'exact' })
+
+                if (!respuestasError && respuestas) {
+                    const total = respuestas.length || 0
+                    document.getElementById('encuestas-completadas').textContent = total
+
+                    // Calcular tasa de finalización (simplificado)
+                    const { data: encuestas } = await supabase
+                        .from('survey_questions')
+                        .select('id', { count: 'exact' })
+
+                    const totalEncuestas = encuestas?.length || 1
+                    const tasa = Math.round((total / totalEncuestas) * 100)
+                    document.getElementById('tasa-finalizacion').textContent = tasa + '%'
+                }
+            } catch (error) {
+                console.error('Error al cargar estadísticas:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    console.warn('Acceso Denegado: No tienes permisos para ver estadísticas.')
+                }
+            }
+        }
+
+        // Cargar lista de usuarios
+        async function loadUsuarios() {
+            const listDiv = document.getElementById('usuarios-list')
+            if (!listDiv) return
+
+            try {
+                const { data: usuarios, error } = await supabase
+                    .from('users')
+                    .select('id, email, role, created_at')
+                    .order('created_at', { ascending: false })
+
+                if (error) throw error
+
+                if (!usuarios || usuarios.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay usuarios registrados.</p>'
+                    return
+                }
+
+                listDiv.innerHTML = usuarios.map(usuario => `
+                    <div class="usuario-item">
+                        <div class="usuario-info">
+                            <strong>${usuario.email || 'Sin email'}</strong>
+                            <span class="role-badge role-${usuario.role || 'student'}">${usuario.role || 'student'}</span>
+                        </div>
+                        <div class="usuario-actions">
+                            <button class="btn-editar" onclick="editarUsuario('${usuario.id}')">Editar</button>
+                            <button class="btn-eliminar" onclick="eliminarUsuario('${usuario.id}')">Eliminar</button>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Acceso Denegado: No tienes permisos para ver usuarios.</p>'
+                } else {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar usuarios: ' + (error.message || 'Error desconocido') + '</p>'
+                }
+            }
+        }
+
+        // Cargar encuestas (surveys)
+        async function loadEncuestas() {
+            const listDiv = document.getElementById('encuestas-list')
+            if (!listDiv) return
+
+            try {
+                // Obtener el usuario actual para el filtro
+                const { data: { user }, error: userError } = await supabase.auth.getUser()
+                if (userError || !user) {
+                    throw new Error('No se pudo obtener el usuario logueado')
+                }
+
+                // Consulta a Supabase con SELECT específico
+                // Filtro: Mis Encuestas
+                const { data: surveys, error } = await supabase
+                    .from('surveys')
+                    .select(`
+                        id,
+                        title,
+                        description,
+                        created_at,
+                        is_active
+                    `)
+                    .eq('created_by', user.id) // <-- CORREGIR ESTO EN JS
+                    // Opcional: Ordenar por fecha de creación (más recientes primero)
+                    .order('created_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error al cargar encuestas:', error)
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar encuestas: ' + (error.message || 'Error desconocido') + '</p>'
+                    return
+                }
+
+                // Limpiar el contenedor HTML anterior
+                listDiv.innerHTML = ''
+
+                // Renderizar la nueva lista
+                if (!surveys || surveys.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay encuestas para mostrar.</p>'
+                } else {
+                    surveys.forEach(survey => {
+                        const item = document.createElement('div')
+                        item.className = 'usuario-item'
+                        item.innerHTML = `
+                            <div class="usuario-info">
+                                <strong>${survey.title || 'Sin título'}</strong>
+                                <span class="role-badge">${survey.is_active ? 'Activa' : 'Inactiva'}</span>
+                                ${survey.description ? `<p style="margin-top: 5px; color: #666; font-size: 0.9em;">${survey.description}</p>` : ''}
+                                <span style="font-size: 0.85em; color: #999;">Creada: ${survey.created_at ? new Date(survey.created_at).toLocaleDateString('es-ES') : 'N/A'}</span>
+                            </div>
+                            <div class="usuario-actions">
+                                <button class="btn-editar" onclick="editarEncuesta('${survey.id}')">Editar</button>
+                                <button class="btn-eliminar" onclick="eliminarEncuesta('${survey.id}')">Eliminar</button>
+                            </div>
+                        `
+                        listDiv.appendChild(item)
+                    })
+                }
+            } catch (error) {
+                console.error('Error al cargar encuestas:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Acceso Denegado: No tienes permisos para ver encuestas.</p>'
+                } else {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar encuestas: ' + (error.message || 'Error desconocido') + '</p>'
+                }
+            }
+        }
+
+        // Crear nueva encuesta
+        async function crearNuevaEncuesta() {
+            try {
+                // 1. Obtener el ID del profesor logueado
+                const { data: { user }, error: authError } = await supabase.auth.getUser()
+                if (authError || !user) {
+                    alert('Error: Debes iniciar sesión para crear encuestas.')
+                    return
+                }
+
+                // 2. Obtener los datos del formulario (título y descripción)
+                const title = prompt('Introduce el título de la nueva encuesta:')
+                if (!title || title.trim() === '') {
+                    alert('La creación de la encuesta fue cancelada.')
+                    return
+                }
+
+                const description = prompt('Introduce una breve descripción de la encuesta (opcional):')
+
+                // 3. Insertar el dato en la tabla 'surveys'
+                const { error } = await supabase
+                    .from('surveys')
+                    .insert([
+                        {
+                            title: title.trim(),
+                            description: description || 'Encuesta sin descripción.',
+                            created_by: user.id, // CRÍTICO: Asigna el ID del profesor logueado
+                            is_active: true // La activamos por defecto
+                        }
+                    ])
+
+                if (error) {
+                    console.error('Error al guardar la encuesta:', error)
+                    alert('Ocurrió un error al guardar la encuesta. Revisa la consola.')
+                } else {
+                    alert(`Encuesta "${title}" creada exitosamente.`)
+                    // **ACCIÓN CLAVE:** Llamar a la función para recargar y mostrar la lista
+                    await loadEncuestas()
+                }
+            } catch (error) {
+                console.error('Error en crearNuevaEncuesta:', error)
+                alert('Error inesperado al crear la encuesta: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Editar encuesta existente
+        async function editarEncuesta(encuestaId) {
+            try {
+                if (!encuestaId) {
+                    alert('Error: ID de encuesta no válido.')
+                    return
+                }
+
+                // Obtener los datos actuales de la encuesta
+                const { data: encuesta, error: fetchError } = await supabase
+                    .from('surveys')
+                    .select('id, title, description, is_active')
+                    .eq('id', encuestaId)
+                    .single()
+
+                if (fetchError || !encuesta) {
+                    alert('Error: No se pudo cargar la encuesta. ' + (fetchError?.message || ''))
+                    return
+                }
+
+                // Solicitar nuevos valores
+                const nuevoTitulo = prompt('Introduce el nuevo título:', encuesta.title || '')
+                if (nuevoTitulo === null) {
+                    return // Usuario canceló
+                }
+
+                const nuevaDescripcion = prompt('Introduce la nueva descripción (opcional):', encuesta.description || '')
+                if (nuevaDescripcion === null) {
+                    return // Usuario canceló
+                }
+
+                // Preguntar por el estado activo
+                const estadoActual = encuesta.is_active ? 'Activa' : 'Inactiva'
+                const nuevoEstado = confirm(`Estado actual: ${estadoActual}\n\n¿Deseas activar la encuesta?`)
+
+                // Actualizar la encuesta
+                const { error: updateError } = await supabase
+                    .from('surveys')
+                    .update({
+                        title: nuevoTitulo.trim(),
+                        description: nuevaDescripcion.trim() || 'Encuesta sin descripción.',
+                        is_active: nuevoEstado
+                    })
+                    .eq('id', encuestaId)
+
+                if (updateError) {
+                    console.error('Error al actualizar la encuesta:', updateError)
+                    alert('Error al actualizar la encuesta: ' + updateError.message)
+                } else {
+                    alert('Encuesta actualizada exitosamente.')
+                    await loadEncuestas() // Recargar la lista
+                }
+            } catch (error) {
+                console.error('Error en editarEncuesta:', error)
+                alert('Error inesperado al editar la encuesta: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Eliminar encuesta
+        async function eliminarEncuesta(encuestaId) {
+            try {
+                if (!encuestaId) {
+                    alert('Error: ID de encuesta no válido.')
+                    return
+                }
+
+                // Confirmar eliminación
+                const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta encuesta?\n\nEsta acción no se puede deshacer.')
+                if (!confirmacion) {
+                    return // Usuario canceló
+                }
+
+                // Obtener el título de la encuesta para el mensaje
+                const { data: encuesta } = await supabase
+                    .from('surveys')
+                    .select('title')
+                    .eq('id', encuestaId)
+                    .single()
+
+                const tituloEncuesta = encuesta?.title || 'la encuesta'
+
+                // Eliminar la encuesta
+                const { error: deleteError } = await supabase
+                    .from('surveys')
+                    .delete()
+                    .eq('id', encuestaId)
+
+                if (deleteError) {
+                    console.error('Error al eliminar la encuesta:', deleteError)
+                    alert('Error al eliminar la encuesta: ' + deleteError.message)
+                } else {
+                    alert(`Encuesta "${tituloEncuesta}" eliminada exitosamente.`)
+                    await loadEncuestas() // Recargar la lista
+                }
+            } catch (error) {
+                console.error('Error en eliminarEncuesta:', error)
+                alert('Error inesperado al eliminar la encuesta: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Crear nuevo usuario
+        async function crearUsuario() {
+            try {
+                // Crear formulario modal
+                const modal = document.createElement('div')
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `
+
+                const formDiv = document.createElement('div')
+                formDiv.style.cssText = `
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    width: 90%;
+                    max-width: 500px;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                `
+
+                formDiv.innerHTML = `
+                    <h2 style="margin-top: 0; color: var(--color-text);">Crear Nuevo Usuario</h2>
+                    <form id="form-crear-usuario">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text);">
+                                Email:
+                            </label>
+                            <input type="email" id="usuario-email" required
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                                placeholder="usuario@ejemplo.com">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text);">
+                                Contraseña:
+                            </label>
+                            <input type="password" id="usuario-password" required
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                                placeholder="Mínimo 6 caracteres">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text);">
+                                Rol:
+                            </label>
+                            <select id="usuario-role" required
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                                <option value="student">Estudiante</option>
+                                <option value="teacher">Profesor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button type="button" id="btn-cancelar-usuario"
+                                style="padding: 0.75rem 1.5rem; border: 2px solid #e0e0e0; background: white; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                Cancelar
+                            </button>
+                            <button type="submit"
+                                style="padding: 0.75rem 1.5rem; background: var(--color-success); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                Crear Usuario
+                            </button>
+                        </div>
+                    </form>
+                `
+
+                modal.appendChild(formDiv)
+                document.body.appendChild(modal)
+
+                // Manejar cancelación
+                document.getElementById('btn-cancelar-usuario').addEventListener('click', () => {
+                    document.body.removeChild(modal)
+                })
+
+                // Manejar envío del formulario
+                document.getElementById('form-crear-usuario').addEventListener('submit', async (e) => {
+                    e.preventDefault()
+
+                    const email = document.getElementById('usuario-email').value.trim()
+                    const password = document.getElementById('usuario-password').value
+                    const role = document.getElementById('usuario-role').value
+
+                    if (!email || !password) {
+                        alert('Por favor, completa todos los campos.')
+                        return
+                    }
+
+                    if (password.length < 6) {
+                        alert('La contraseña debe tener al menos 6 caracteres.')
+                        return
+                    }
+
+                    try {
+                        // Primero intentar crear el usuario en auth
+                        let userId = null
+                        let authErrorOccurred = false
+
+                        try {
+                            const { data: authData, error: authError } = await supabase.auth.signUp({
+                                email: email,
+                                password: password,
+                                options: {
+                                    emailRedirectTo: window.location.origin
+                                }
+                            })
+
+                            if (authError) {
+                                // Si el usuario ya existe, intentar obtener su ID
+                                if (authError.message.includes('already registered') || authError.message.includes('already exists')) {
+                                    // Buscar el usuario existente por email
+                                    const { data: existingUsers } = await supabase
+                                        .from('users')
+                                        .select('id')
+                                        .eq('email', email)
+                                        .single()
+
+                                    if (existingUsers) {
+                                        userId = existingUsers.id
+                                        alert('El usuario ya existe. Se actualizará el rol.')
+                                    } else {
+                                        throw new Error('El usuario ya existe en auth pero no en la base de datos. Contacta al administrador.')
+                                    }
+                                } else {
+                                    throw authError
+                                }
+                            } else if (authData.user) {
+                                userId = authData.user.id
+                            }
+                        } catch (authErr) {
+                            console.warn('Error en auth (puede que el usuario ya exista):', authErr)
+                            authErrorOccurred = true
+
+                            // Intentar buscar si el usuario ya existe en la tabla users
+                            const { data: existingUser } = await supabase
+                                .from('users')
+                                .select('id')
+                                .eq('email', email)
+                                .single()
+
+                            if (existingUser) {
+                                userId = existingUser.id
+                                alert('El usuario ya existe. Se actualizará el rol.')
+                            } else {
+                                throw new Error('No se pudo crear el usuario. Verifica que el email no esté en uso.')
+                            }
+                        }
+
+                        if (!userId) {
+                            throw new Error('No se pudo obtener el ID del usuario')
+                        }
+
+                        // Verificar que el usuario actual es admin antes de insertar
+                        const { data: { user: currentUser } } = await supabase.auth.getUser()
+                        const currentUserRole = localStorage.getItem('userRole')
+
+                        if (!currentUser || currentUserRole !== 'admin') {
+                            throw new Error('No tienes permisos para crear usuarios. Debes ser administrador.')
+                        }
+
+                        // Verificar si el usuario ya existe en la tabla users
+                        const { data: existingUser } = await supabase
+                            .from('users')
+                            .select('id, role')
+                            .eq('id', userId)
+                            .single()
+
+                        let userError = null
+                        let success = false
+
+                        if (existingUser) {
+                            // Actualizar el usuario existente
+                            const { error: updateError } = await supabase
+                                .from('users')
+                                .update({
+                                    email: email,
+                                    role: role
+                                })
+                                .eq('id', userId)
+
+                            userError = updateError
+                            success = !updateError
+                        } else {
+                            // Intentar insertar nuevo usuario
+                            // Si falla por RLS, intentar usar una función RPC si está disponible
+                            const { error: insertError } = await supabase
+                                .from('users')
+                                .insert([
+                                    {
+                                        id: userId,
+                                        email: email,
+                                        role: role
+                                    }
+                                ])
+
+                            if (insertError && (insertError.message.includes('row-level security') || insertError.message.includes('RLS'))) {
+                                // Si falla por RLS, intentar usar función RPC (si existe)
+                                try {
+                                    const { error: rpcError } = await supabase.rpc('create_user_with_role', {
+                                        user_id: userId,
+                                        user_email: email,
+                                        user_role: role
+                                    })
+
+                                    if (!rpcError) {
+                                        success = true
+                                    } else {
+                                        userError = rpcError
+                                    }
+                                } catch (rpcErr) {
+                                    // La función RPC no existe, usar el error original
+                                    userError = insertError
+                                }
+                            } else {
+                                userError = insertError
+                                success = !insertError
+                            }
+                        }
+
+                        if (userError) {
+                            console.error('Error al crear/actualizar registro en users:', userError)
+
+                            // Mensaje más específico para errores de RLS con instrucciones
+                            if (userError.message.includes('row-level security') || userError.message.includes('RLS')) {
+                                alert(`⚠️ Error de Políticas de Seguridad (RLS)\n\nLas políticas de seguridad de Supabase están bloqueando esta operación.\n\nPara solucionarlo, necesitas configurar las políticas RLS en Supabase:\n\n1. Ve al panel de Supabase → Authentication → Policies\n2. En la tabla 'users', crea una política que permita a los administradores INSERT:\n   - Policy name: "Allow admins to insert users"\n   - Allowed operation: INSERT\n   - Target roles: authenticated\n   - USING expression: (SELECT role FROM users WHERE id = auth.uid()) = 'admin'\n\nO contacta al administrador de la base de datos.\n\nError técnico: ${userError.message}`)
+                            } else {
+                                alert('Error al asignar el rol: ' + userError.message)
+                            }
+                        } else if (success) {
+                            alert(`✅ Usuario "${email}" ${existingUser ? 'actualizado' : 'creado'} exitosamente con rol "${role}".`)
+                            document.body.removeChild(modal)
+                            await loadUsuarios() // Recargar la lista
+                        }
+                    } catch (error) {
+                        console.error('Error al crear usuario:', error)
+                        alert('Error al crear usuario: ' + (error.message || 'Error desconocido'))
+                    }
+                })
+            } catch (error) {
+                console.error('Error en crearUsuario:', error)
+                alert('Error inesperado: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Editar usuario existente
+        async function editarUsuario(usuarioId) {
+            try {
+                if (!usuarioId) {
+                    alert('Error: ID de usuario no válido.')
+                    return
+                }
+
+                // Obtener los datos actuales del usuario
+                const { data: usuario, error: fetchError } = await supabase
+                    .from('users')
+                    .select('id, email, role')
+                    .eq('id', usuarioId)
+                    .single()
+
+                if (fetchError || !usuario) {
+                    alert('Error: No se pudo cargar el usuario. ' + (fetchError?.message || ''))
+                    return
+                }
+
+                // Crear formulario modal para editar
+                const modal = document.createElement('div')
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `
+
+                const formDiv = document.createElement('div')
+                formDiv.style.cssText = `
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    width: 90%;
+                    max-width: 500px;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                `
+
+                formDiv.innerHTML = `
+                    <h2 style="margin-top: 0; color: var(--color-text);">Editar Usuario</h2>
+                    <form id="form-editar-usuario">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text);">
+                                Email:
+                            </label>
+                            <input type="email" id="edit-usuario-email" value="${usuario.email || ''}" required
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text);">
+                                Rol:
+                            </label>
+                            <select id="edit-usuario-role" required
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                                <option value="student" ${usuario.role === 'student' ? 'selected' : ''}>Estudiante</option>
+                                <option value="teacher" ${usuario.role === 'teacher' ? 'selected' : ''}>Profesor</option>
+                                <option value="admin" ${usuario.role === 'admin' ? 'selected' : ''}>Administrador</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button type="button" id="btn-cancelar-editar-usuario"
+                                style="padding: 0.75rem 1.5rem; border: 2px solid #e0e0e0; background: white; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                Cancelar
+                            </button>
+                            <button type="submit"
+                                style="padding: 0.75rem 1.5rem; background: var(--color-primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                `
+
+                modal.appendChild(formDiv)
+                document.body.appendChild(modal)
+
+                // Manejar cancelación
+                document.getElementById('btn-cancelar-editar-usuario').addEventListener('click', () => {
+                    document.body.removeChild(modal)
+                })
+
+                // Manejar envío del formulario
+                document.getElementById('form-editar-usuario').addEventListener('submit', async (e) => {
+                    e.preventDefault()
+
+                    const nuevoEmail = document.getElementById('edit-usuario-email').value.trim()
+                    const nuevoRole = document.getElementById('edit-usuario-role').value
+
+                    if (!nuevoEmail) {
+                        alert('El email es requerido.')
+                        return
+                    }
+
+                    try {
+                        // Verificar si el email cambió
+                        const emailCambio = nuevoEmail !== usuario.email
+
+                        // Actualizar en la tabla users
+                        const { error: updateError } = await supabase
+                            .from('users')
+                            .update({
+                                email: nuevoEmail,
+                                role: nuevoRole
+                            })
+                            .eq('id', usuarioId)
+
+                        if (updateError) {
+                            throw updateError
+                        }
+
+                        // Nota: No podemos actualizar el email en auth.users desde el cliente porque requiere permisos de service_role
+                        // El email en auth.users puede actualizarse manualmente desde el panel de Supabase si es necesario
+                        if (emailCambio) {
+                            alert(`Usuario actualizado en la base de datos.\n\nNota: El email en autenticación no se puede actualizar automáticamente desde aquí. El usuario deberá usar su email original para iniciar sesión, o puedes actualizarlo manualmente desde el panel de Supabase.`)
+                        } else {
+                            alert('Usuario actualizado exitosamente.')
+                        }
+
+                        document.body.removeChild(modal)
+                        await loadUsuarios() // Recargar la lista
+                    } catch (error) {
+                        console.error('Error al actualizar usuario:', error)
+                        alert('Error al actualizar usuario: ' + (error.message || 'Error desconocido'))
+                    }
+                })
+            } catch (error) {
+                console.error('Error en editarUsuario:', error)
+                alert('Error inesperado al editar usuario: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Eliminar usuario
+        async function eliminarUsuario(usuarioId) {
+            try {
+                if (!usuarioId) {
+                    alert('Error: ID de usuario no válido.')
+                    return
+                }
+
+                // Obtener datos del usuario para el mensaje
+                const { data: usuario } = await supabase
+                    .from('users')
+                    .select('email')
+                    .eq('id', usuarioId)
+                    .single()
+
+                const emailUsuario = usuario?.email || 'el usuario'
+
+                // Confirmar eliminación
+                const confirmacion = confirm(`¿Estás seguro de que deseas eliminar a ${emailUsuario}?\n\nEsta acción no se puede deshacer.`)
+                if (!confirmacion) {
+                    return // Usuario canceló
+                }
+
+                // Eliminar de la tabla users
+                // Nota: No podemos eliminar de auth.users desde el cliente porque requiere permisos de service_role
+                // La eliminación de auth.users debe hacerse desde el panel de Supabase o mediante Edge Functions
+                const { error: deleteError } = await supabase
+                    .from('users')
+                    .delete()
+                    .eq('id', usuarioId)
+
+                if (deleteError) {
+                    console.error('Error al eliminar usuario:', deleteError)
+                    alert('Error al eliminar usuario: ' + deleteError.message)
+                    return
+                }
+
+                // SOLUCIÓN: Llama a la función de carga para refrescar el HTML
+                // Usuario eliminado exitosamente de la tabla users
+                // El usuario ya no podrá acceder al sistema porque no existe en la tabla users
+                // La cuenta de auth.users puede eliminarse manualmente desde el panel de Supabase si es necesario
+                await loadUsuarios() // <-- Asumo que esta es tu función de "Actualizar Lista"
+                alert(`Usuario "${emailUsuario}" eliminado exitosamente de la base de datos.\n\nEl usuario ya no podrá acceder al sistema.`)
+            } catch (error) {
+                console.error('Error en eliminarUsuario:', error)
+                alert('Error inesperado al eliminar usuario: ' + (error.message || 'Error desconocido'))
+            }
+        }
+
+        // Hacer las funciones accesibles globalmente para onclick
+        window.editarEncuesta = editarEncuesta
+        window.eliminarEncuesta = eliminarEncuesta
+        window.editarUsuario = editarUsuario
+        window.eliminarUsuario = eliminarUsuario
+
+        // Cargar respuestas de encuestas
+        async function loadRespuestas() {
+            const listDiv = document.getElementById('admin-respuestas-list')
+            if (!listDiv) return
+
+            try {
+                // Select: Respuestas de Estudiantes
+                const { data: respuestas, error } = await supabase
+                    .from('survey_responses')
+                    .select('id, respondent_id, question_id, survey_id, responses, responded_at')
+                    .order('responded_at', { ascending: false })
+
+                if (error) throw error
+
+                if (!respuestas || respuestas.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay respuestas de encuestas.</p>'
+                    return
+                }
+
+                listDiv.innerHTML = respuestas.map(respuesta => `
+                    <div class="respuesta-item">
+                        <div class="respuesta-header">
+                            <h4>Respuesta ID: ${respuesta.id}</h4>
+                            <span class="respuesta-date">${new Date(respuesta.responded_at).toLocaleDateString('es-ES')}</span>
+                        </div>
+                        <div class="respuesta-content">
+                            <p><strong>Usuario ID:</strong> ${respuesta.respondent_id || respuesta.user_id || 'N/A'}</p>
+                            <p><strong>Pregunta ID:</strong> ${respuesta.question_id || respuesta.pregunta_id || 'N/A'}</p>
+                            <p><strong>Respuesta:</strong> ${typeof respuesta.responses === 'object' ? JSON.stringify(respuesta.responses, null, 2) : (respuesta.responses || 'N/A')}</p>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                console.error('Error al cargar respuestas:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Acceso Denegado: No tienes permisos para ver respuestas.</p>'
+                } else {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar respuestas: ' + (error.message || 'Error desconocido') + '</p>'
+                }
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await checkAuth()
+            if (user) {
+                await renderAuth(user)
+                await loadEstadisticas()
+                await loadUsuarios()
+                await loadEncuestas()
+                await loadRespuestas()
+
+                // Event listeners para botones
+                document.getElementById('btn-actualizar-usuarios')?.addEventListener('click', loadUsuarios)
+                document.getElementById('btn-actualizar-encuestas')?.addEventListener('click', loadEncuestas)
+                document.getElementById('btn-actualizar-respuestas')?.addEventListener('click', loadRespuestas)
+                document.getElementById('btn-crear-encuesta')?.addEventListener('click', crearNuevaEncuesta)
+                document.getElementById('btn-crear-usuario')?.addEventListener('click', crearUsuario)
+            }
+        })
+    </script>
+
+    <style>
+        .admin-section {
+            background: var(--color-surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .admin-section h3 {
+            margin-bottom: var(--spacing-lg);
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            color: var(--color-text);
+            font-weight: 700;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .btn-actualizar,
+        .btn-crear {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-base);
+            font-family: var(--font-sans);
+        }
+
+        .btn-actualizar {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-actualizar:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-crear {
+            background: var(--color-success);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-crear:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .usuario-item {
+            background: var(--color-bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--color-primary);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .usuario-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+            background: var(--color-surface);
+        }
+
+        .usuario-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .usuario-info strong {
+            color: var(--color-text);
+            font-size: 1.1rem;
+        }
+
+        .role-badge {
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .role-admin {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .role-teacher {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .role-student {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .usuario-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-editar,
+        .btn-eliminar {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--transition-base);
+        }
+
+        .btn-editar {
+            background: var(--color-primary-light);
+            color: white;
+        }
+
+        .btn-editar:hover {
+            background: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-eliminar {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-eliminar:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+    </style>
+</body>
+
+</html>

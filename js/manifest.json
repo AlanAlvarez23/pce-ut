@@ -1,0 +1,32 @@
+{
+  "name": "Plataforma Comunicativa Estudiantil - UT",
+  "short_name": "i-DGS PCE-UT",
+  "description": "Centro de control y visualización de datos del sistema PCE-UT, optimizado para Mediadores y Administradores.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#2c3e50",
+  "background_color": "#ecf0f1",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/img/Logo2.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Pendientes",
+      "url": "/index.html?filtro=pendiente",
+      "description": "Revisar todos los casos reportados que aún no han sido resueltos."
+    },
+    {
+      "name": "Métricas de Valores",
+      "url": "/index.html?seccion=valores",
+      "description": "Acceder al resumen de Paz, Inclusión y Respeto."
+    }
+  ]
+}

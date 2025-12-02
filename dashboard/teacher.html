@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCE-UT | Dashboard Profesor</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="manifest" href="../js/manifest.json">
+</head>
+
+<body>
+    <!-- Barra superior de contacto -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span>📧 contacto@pceut.edu.mx</span>
+            <span class="separator">|</span>
+            <span>📞 +52 81-45-34-28-08</span>
+        </div>
+        <div class="top-bar-right">
+            <span id="top-auth-area"></span>
+        </div>
+    </div>
+
+    <!-- Header principal -->
+    <header>
+        <div class="header-container">
+            <h1>Plataforma Comunicativa Estudiantil</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li id="auth-area"><a id="logout-link" href="#">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard de Profesor -->
+    <main class="dashboard-content">
+        <section class="dashboard-header">
+            <h2>Panel del Profesor</h2>
+            <p class="welcome-text">Bienvenido, Profesor</p>
+        </section>
+
+        <!-- Lista de Encuestas Creadas -->
+        <section class="teacher-section">
+            <h3>Mis Encuestas</h3>
+            <div class="teacher-controls">
+                <button id="btn-actualizar-encuestas" class="btn-actualizar">Actualizar</button>
+                <!-- Botón oculto: Los profesores no pueden crear encuestas según políticas RLS -->
+                <!-- <button id="btn-crear-encuesta" class="btn-crear">Crear Nueva Encuesta</button> -->
+            </div>
+            <div id="encuestas-list" class="encuestas-list">
+                <p class="empty-state">Cargando encuestas...</p>
+            </div>
+        </section>
+
+        <!-- Respuestas de Estudiantes -->
+        <section class="teacher-section">
+            <h3>Respuestas de Estudiantes</h3>
+            <div class="teacher-controls">
+                <button id="btn-actualizar-respuestas" class="btn-actualizar">Actualizar</button>
+            </div>
+            <div id="respuestas-list" class="respuestas-list">
+                <p class="empty-state">Cargando respuestas...</p>
+            </div>
+        </section>
+
+        <!-- Herramienta de Retroalimentación -->
+        <section class="teacher-section">
+            <h3>Herramienta de Retroalimentación</h3>
+            <div id="retroalimentacion-section">
+                <div class="form-group">
+                    <label for="respuesta-id">ID de Respuesta:</label>
+                    <input type="text" id="respuesta-id" placeholder="Ingresa el ID de la respuesta">
+                </div>
+                <div class="form-group">
+                    <label for="retro-texto">Retroalimentación:</label>
+                    <textarea id="retro-texto" rows="4" placeholder="Escribe tu comentario de retroalimentación..."></textarea>
+                </div>
+                <button id="btn-enviar-retro" class="btn-guardar">Enviar Retroalimentación</button>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contacto">
+        <h3>Contacto</h3>
+        <p>¿Tienes preguntas? Contáctanos en: <a href="mailto:pce-ut@gmail.com">pce-ut@gmail.com</a></p>
+        <p>&copy; 2025 Plataforma Comunicativa Estudiantil. Todos los derechos reservados.</p>
+    </footer>
+
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+
+        // Verificar autenticación y rol
+        async function checkAuth() {
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser()
+                const userRole = localStorage.getItem('userRole')
+
+                if (error || !user || (userRole !== 'teacher' && userRole !== 'profesor')) {
+                    // Si no es profesor, mostrar mensaje y redirigir
+                    alert('❌ Acceso Denegado: Solo los profesores pueden acceder a este panel.')
+                    localStorage.removeItem('userRole')
+                    window.location.href = '../index.html'
+                    return null
+                }
+
+                return user
+            } catch (err) {
+                console.error('Error de autenticación:', err)
+                alert('❌ Error de autenticación. Por favor, inicia sesión nuevamente.')
+                localStorage.removeItem('userRole')
+                window.location.href = '../index.html'
+                return null
+            }
+        }
+
+        // Renderizar información de usuario
+        async function renderAuth(user) {
+            const authArea = document.getElementById('auth-area')
+            const topAuthArea = document.getElementById('top-auth-area')
+            
+            if (user) {
+                const email = user.email || 'Profesor'
+                if (authArea) {
+                    authArea.innerHTML = `<a id="user-email" href="mailto:${email}">${email}</a> · <a id="logout-link" href="#">Cerrar sesión</a>`
+                }
+                if (topAuthArea) {
+                    topAuthArea.innerHTML = `<a href="mailto:${email}">${email}</a>`
+                }
+
+                const logoutLink = document.getElementById('logout-link')
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', async (e) => {
+                        e.preventDefault()
+                        localStorage.removeItem('userRole')
+                        await supabase.auth.signOut()
+                        window.location.href = '../index.html'
+                    })
+                }
+            }
+        }
+
+        // Cargar encuestas creadas por el profesor
+        async function loadEncuestas() {
+            const listDiv = document.getElementById('encuestas-list')
+            if (!listDiv) return
+
+            try {
+                // Obtener el ID del profesor logueado
+                const { data: { user }, error: userError } = await supabase.auth.getUser()
+                if (userError || !user) {
+                    throw new Error('No se pudo obtener el usuario logueado')
+                }
+
+                // Filtrar encuestas por el ID del profesor creador
+                // CORRECCIÓN 1: Usar created_by en lugar de profesor_creador_id
+                // CORRECCIÓN 2: Eliminar created_at del SELECT según instrucciones
+                const { data: encuestas, error } = await supabase
+                    .from('surveys')
+                    .select('id, title')
+                    .eq('created_by', user.id)
+                    .order('id', { ascending: false })
+
+                if (error) throw error
+
+                if (!encuestas || encuestas.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay encuestas creadas por ti.</p>'
+                    return
+                }
+
+                listDiv.innerHTML = encuestas.map(encuesta => `
+                    <div class="encuesta-item">
+                        <div class="encuesta-header">
+                            <h4>${encuesta.title || 'Sin título'}</h4>
+                            <span class="encuesta-date">ID: ${encuesta.id}</span>
+                        </div>
+                        <div class="encuesta-info">
+                            <p><strong>ID:</strong> ${encuesta.id}</p>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                console.error('Error al cargar encuestas:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Acceso Denegado: No tienes permisos para ver encuestas.</p>'
+                } else {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar encuestas: ' + (error.message || 'Error desconocido') + '</p>'
+                }
+            }
+        }
+
+        // Cargar respuestas de estudiantes
+        async function loadRespuestas() {
+            const listDiv = document.getElementById('respuestas-list')
+            if (!listDiv) return
+
+            try {
+                // Consulta amplia - RLS maneja la seguridad
+                // Obtener todas las respuestas con joins para datos relacionados
+                // CORRECCIÓN CLAVE: Usar responded_at y response_text (no responses)
+                const { data: respuestas, error } = await supabase
+                    .from('survey_responses')
+                    .select(`
+                        id,
+                        respondent_id,
+                        question_id,
+                        survey_id,
+                        response_text,
+                        responded_at,
+                        respondent:respondent_id ( email ),
+                        question:question_id ( question_text ),
+                        survey:survey_id ( title )
+                    `)
+                    .order('responded_at', { ascending: false })
+
+                if (error) throw error
+
+                if (!respuestas || respuestas.length === 0) {
+                    listDiv.innerHTML = '<p class="empty-state">No hay respuestas de estudiantes.</p>'
+                    return
+                }
+
+                listDiv.innerHTML = respuestas.map(respuesta => {
+                    const estudianteEmail = respuesta.respondent?.email || 'N/A'
+                    const preguntaTexto = respuesta.question?.question_text || 'N/A'
+                    const encuestaTitulo = respuesta.survey?.title || 'N/A'
+                    
+                    return `
+                        <div class="respuesta-item">
+                            <div class="respuesta-header">
+                                <h4>Respuesta ID: ${respuesta.id}</h4>
+                                <span class="respuesta-date">${respuesta.responded_at ? new Date(respuesta.responded_at).toLocaleDateString('es-ES') : 'Sin fecha'}</span>
+                            </div>
+                            <div class="respuesta-content">
+                                <p><strong>Encuesta:</strong> ${encuestaTitulo}</p>
+                                <p><strong>Estudiante:</strong> ${estudianteEmail}</p>
+                                <p><strong>Pregunta:</strong> ${preguntaTexto}</p>
+                                <p><strong>Respuesta:</strong> ${respuesta.response_text || 'N/A'}</p>
+                            </div>
+                        </div>
+                    `
+                }).join('')
+            } catch (error) {
+                console.error('Error al cargar respuestas:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Acceso Denegado: No tienes permisos para ver respuestas.</p>'
+                } else {
+                    listDiv.innerHTML = '<p class="empty-state error-message">❌ Error al cargar respuestas: ' + (error.message || 'Error desconocido') + '</p>'
+                }
+            }
+        }
+
+        // Enviar retroalimentación
+        async function enviarRetroalimentacion() {
+            const respuestaId = document.getElementById('respuesta-id').value.trim()
+            const retroTexto = document.getElementById('retro-texto').value.trim()
+
+            if (!respuestaId || !retroTexto) {
+                alert('⚠️ Por favor, completa todos los campos.')
+                return
+            }
+
+            try {
+                const { data: { user }, error: userError } = await supabase.auth.getUser()
+                if (userError || !user) {
+                    throw new Error('No hay sesión activa.')
+                }
+
+                const { error } = await supabase
+                    .from('feedback')
+                    .insert([
+                        {
+                            respuesta_id: respuestaId,
+                            profesor_id: user.id,
+                            retro_texto: retroTexto
+                        }
+                    ])
+
+                if (error) throw error
+
+                alert('✅ Retroalimentación enviada correctamente.')
+                document.getElementById('respuesta-id').value = ''
+                document.getElementById('retro-texto').value = ''
+            } catch (error) {
+                console.error('Error al enviar retroalimentación:', error)
+                // Manejo de errores de permisos RLS
+                if (error.code === 'PGRST301' || error.message?.includes('permission') || error.message?.includes('denied')) {
+                    alert('❌ Acceso Denegado: No tienes permisos para enviar retroalimentación.')
+                } else {
+                    alert('❌ Error al enviar retroalimentación: ' + (error.message || 'Error desconocido'))
+                }
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await checkAuth()
+            if (user) {
+                await renderAuth(user)
+                await loadEncuestas()
+                await loadRespuestas()
+
+                // Event listeners
+                document.getElementById('btn-actualizar-encuestas')?.addEventListener('click', loadEncuestas)
+                document.getElementById('btn-actualizar-respuestas')?.addEventListener('click', loadRespuestas)
+                document.getElementById('btn-enviar-retro')?.addEventListener('click', enviarRetroalimentacion)
+            }
+        })
+    </script>
+
+    <style>
+        .teacher-section {
+            background: var(--color-surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .teacher-section h3 {
+            margin-bottom: var(--spacing-lg);
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            color: var(--color-text);
+            font-weight: 700;
+        }
+
+        .teacher-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .btn-actualizar,
+        .btn-crear {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-base);
+            font-family: var(--font-sans);
+        }
+
+        .btn-actualizar {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-actualizar:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-crear {
+            background: var(--color-success);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-crear:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .encuestas-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .encuesta-item {
+            background: var(--color-bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--color-primary);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .encuesta-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+            background: var(--color-surface);
+        }
+
+        .encuesta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .encuesta-header h4 {
+            color: var(--color-text);
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .encuesta-date {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .encuesta-info {
+            display: flex;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .encuesta-info p {
+            margin: 0;
+            color: var(--color-text-secondary);
+        }
+
+        #retroalimentacion-section {
+            max-width: 600px;
+        }
+    </style>
+</body>
+
+</html>
+
